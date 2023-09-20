@@ -1,11 +1,11 @@
 import WorkbookLayout from '@/Layouts/WorkbookLayout';
-import InputLabel from '@/Components/InputLabel';
-import Radio from '@/Components/Radio';
+import RunnableCodeBlock from '@/Components/Code/RunnableCodeBlock';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
-import { CodeBlock, dracula } from "react-code-blocks";
+import { useState, useRef } from 'react';
+import axios from 'axios';
 
 export default function SelectData({ }) {
+    const previewPane = useRef(null);
     const module = 'sqlSelectData';
 
     const previewDisplayConfig = {
@@ -18,11 +18,11 @@ export default function SelectData({ }) {
             previewUrl: route('example', {module, exercise: 'ormSelectAll'})
         },
         sqlSelectById: {
-            title: "SQL: Select All",
+            title: "SQL: Select By ID",
             previewUrl: route('example', {module, exercise: 'sqlSelectById'})
         },
         ormSelectById: {
-            title: "ORM: Select All",
+            title: "ORM: Select By ID",
             previewUrl: route('example', {module, exercise: 'ormSelectById'})
         },
     };
@@ -51,13 +51,20 @@ export default function SelectData({ }) {
         'return Species::get()->toArray();',
     ];
 
-    const changePreviewDisplay = (e) => {
-        const target = e.target;
+    const changePreviewDisplay = (value) => {
+        if (previewDisplayConfig[value]) {
+            let config = previewDisplayConfig[value];
 
-        if (target) {
-            if (previewDisplayConfig[target.value]) {
-                setPreviewDisplay(target.value);
-            }
+            axios.get(config.previewUrl)
+                .then((response) => response.data)
+                .then((data) => {
+                    // console.log(data);
+                    previewPane.current.contentWindow.document.open();
+                    previewPane.current.contentWindow.document.write(data.results);
+                    previewPane.current.contentWindow.document.close();
+                })
+
+            setPreviewDisplay(value);
         }
     }
 
@@ -70,52 +77,38 @@ export default function SelectData({ }) {
             <Head title="Selecting Data" />
 
             <div className="flex justify-between h-full w-full gap-x-3">
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow p-4">
+                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow p-4">
                     <h1 className='text-2xl my-2'>Selecting Data</h1>
                     <h2 className='text-lg my-2'>Fetching all data</h2>
                     <h3 className='font-bold my-2'>SQL</h3>
-                    <CodeBlock
-                        language='php'
-                        showLineNumbers
-                        theme={dracula}
-                        wrapLines
+                    <RunnableCodeBlock
+                        title='SQL'
                         text={sqlSelectAll.join("\n")}
+                        previewCallback={() => changePreviewDisplay('sqlSelectAll')}
                     />
 
                     <h3 className='font-bold my-2'>ORM</h3>
-                    <CodeBlock
-                        language='php'
-                        showLineNumbers
-                        theme={dracula}
-                        wrapLines
+                    <RunnableCodeBlock
+                        title='SQL'
                         text={ormSelectAll.join("\n")}
+                        previewCallback={() => changePreviewDisplay('ormSelectAll')}
                     />
 
-                    <h3 className='font-bold my-2'>Preview</h3>
-                    <InputLabel className='inline-block mr-6'>
-                        <Radio
-                            name="previewDisplayInput"
-                            onChange={changePreviewDisplay}
-                            value='sqlSelectAll'
-                            checked={previewDisplay === 'sqlSelectAll' ? 'checked' : ''}
-                        />
-                        SQL
-                    </InputLabel>
-                    <InputLabel className='inline-block mr-6'>
-                        <Radio
-                            name="previewDisplayInput"
-                            onChange={changePreviewDisplay}
-                            value='ormSelectAll'
-                            checked={previewDisplay === 'ormSelectAll' ? 'checked' : ''}
-                        />
-                        ORM
-                    </InputLabel>
+                    <h2 className='text-lg my-2'>Find a record by ID</h2>
+                    <h3 className='font-bold my-2'>SQL</h3>
+                    <RunnableCodeBlock
+                        title='SQL'
+                        text={sqlSelectById.join("\n")}
+                        previewCallback={() => changePreviewDisplay('sqlSelectById')}
+                    />
 
-                    <div>
-                        {previewDisplay}
-                        <br />
-                        {previewDisplayConfig[previewDisplay].previewUrl}
-                    </div>
+                    <h3 className='font-bold my-2'>ORM</h3>
+                    <RunnableCodeBlock
+                        title='SQL'
+                        text={ormSelectById.join("\n")}
+                        previewCallback={() => changePreviewDisplay('ormSelectById')}
+                    />
+
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow">
@@ -124,7 +117,8 @@ export default function SelectData({ }) {
                     </div>
                     <div className="h-full">
                         <iframe
-                            src={previewDisplayConfig[previewDisplay].previewUrl}
+                            // src={previewDisplayConfig[previewDisplay].previewUrl}
+                            ref={previewPane}
                             frameborder="0"
                             className='w-full h-full'
                         />
