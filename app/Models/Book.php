@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Book extends Model
 {
@@ -15,4 +16,9 @@ class Book extends Model
         'genre',
         'release_date',
     ];
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class);
+    }
 }
