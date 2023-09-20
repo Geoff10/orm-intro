@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExampleController extends Controller
 {
@@ -11,11 +13,18 @@ class ExampleController extends Controller
      */
     public function __invoke(string $module, string $exercise)
     {
+        DB::connection()->enableQueryLog();
+
         $example = $this->getExample($module, $exercise);
 
         if ($example) {
-            return view('results', [
+            $results = view('results', [
                 'results' => $example(),
+            ])->render();
+
+            return response()->json([
+                'results' => $results,
+                'queries' => DB::getQueryLog(),
             ]);
         }
 
@@ -42,32 +51,28 @@ class ExampleController extends Controller
         return [
             'sqlSelectData' => [
                 'sqlSelectAll' => function (): array {
+                    $data = DB::select('SELECT * FROM books');
+
                     return [
                         'properties' => [
                             'Method' => 'SQL',
                         ],
                         'table' => [
-                            'headers' => ['id', 'name', 'number of sides'],
-                            'rows' => [
-                                ['1', 'triangle', 3],
-                                ['2', 'square', 4],
-                                ['3', 'rectangle', 4],
-                            ]
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
                         ],
                     ];
                 },
                 'ormSelectAll' => function (): array {
+                    $data = Book::all();
+
                     return [
                         'properties' => [
                             'Method' => 'Eloquent ORM',
                         ],
                         'table' => [
-                            'headers' => ['id', 'name', 'number of sides'],
-                            'rows' => [
-                                ['1', 'triangle', 3],
-                                ['2', 'square', 4],
-                                ['3', 'rectangle', 4],
-                            ]
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
                         ],
                     ];
                 },
