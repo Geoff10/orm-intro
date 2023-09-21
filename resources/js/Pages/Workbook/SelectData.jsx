@@ -6,73 +6,97 @@ import axios from 'axios';
 
 export default function SelectData({ }) {
     const previewPane = useRef(null);
+
     const module = 'sqlSelectData';
-
-    const previewDisplayConfig = {
-        sqlSelectAll: {
-            title: "SQL: Select All",
-            previewUrl: route('example', {module, exercise: 'sqlSelectAll'})
+    const workbookContent = [
+        {
+            type: 'h1',
+            content: 'Selecting Data',
         },
-        ormSelectAll: {
-            title: "ORM: Select All",
-            previewUrl: route('example', {module, exercise: 'ormSelectAll'})
+        {
+            type: 'h2',
+            content: 'Fetching all data',
         },
-        sqlSelectById: {
-            title: "SQL: Select By ID",
-            previewUrl: route('example', {module, exercise: 'sqlSelectById'})
+        {
+            type: 'h3',
+            content: 'SQL',
         },
-        ormSelectById: {
-            title: "ORM: Select By ID",
-            previewUrl: route('example', {module, exercise: 'ormSelectById'})
+        {
+            type: 'runnableCodeBlock',
+            title: 'SQL: Select All',
+            text: [
+                "$query = $this->db->prepare('SELECT * FROM species;');",
+                '$query->setFetchMode(PDO::FETCH_ASSOC);',
+                '$query->execute();',
+                '',
+                'return $query->fetchAll();',
+            ],
+            route: route('example', {module, exercise: 'sqlSelectAll'}),
         },
-    };
-
-    const sqlSelectAll = [
-        "$query = $this->db->prepare('SELECT * FROM species;');",
-        '$query->setFetchMode(PDO::FETCH_ASSOC);',
-        '$query->execute();',
-        '',
-        'return $query->fetchAll();',
+        {
+            type: 'h3',
+            content: 'ORM',
+        },
+        {
+            type: 'runnableCodeBlock',
+            title: 'ORM: Select All',
+            text: [
+                'return Species::get();',
+            ],
+            route: route('example', {module, exercise: 'ormSelectAll'}),
+        },
+        {
+            type: 'h2',
+            content: 'Find a record by ID',
+        },
+        {
+            type: 'h3',
+            content: 'SQL',
+        },
+        {
+            type: 'runnableCodeBlock',
+            title: 'SQL: Select By ID',
+            text: [
+                "$query = $this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
+                '$query->setFetchMode(PDO::FETCH_ASSOC);',
+                "$query->execute(['id' => $id]);",
+                '',
+                'return $query->fetch();',
+            ],
+            route: route('example', {module, exercise: 'sqlSelectById'}),
+        },
+        {
+            type: 'h3',
+            content: 'ORM',
+        },
+        {
+            type: 'runnableCodeBlock',
+            title: 'ORM: Select By ID',
+            text: [
+                'return Book::find(1);',
+            ],
+            route: route('example', {module, exercise: 'ormSelectById'}),
+        },
     ];
 
-    const ormSelectAll = [
-        'return Species::get()->toArray();',
-    ];
+    const loadPreviewDisplay = (url, title) => {
+        axios.get(url)
+            .then((response) => response.data)
+            .then((data) => {
+                // console.log(data);
+                previewPane.current.contentWindow.document.open();
+                previewPane.current.contentWindow.document.write(data.results);
+                previewPane.current.contentWindow.document.close();
 
-    const sqlSelectById = [
-        "$query = $this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
-        '$query->setFetchMode(PDO::FETCH_ASSOC);',
-        "$query->execute(['id' => $id]);",
-        '',
-        'return $query->fetch();',
-    ];
+                const queries = data.queries ?? [];
+                setQueryLog(queries);
+            });
 
-    const ormSelectById = [
-        'return Species::get()->toArray();',
-    ];
-
-    const changePreviewDisplay = (value) => {
-        if (previewDisplayConfig[value]) {
-            let config = previewDisplayConfig[value];
-
-            axios.get(config.previewUrl)
-                .then((response) => response.data)
-                .then((data) => {
-                    // console.log(data);
-                    previewPane.current.contentWindow.document.open();
-                    previewPane.current.contentWindow.document.write(data.results);
-                    previewPane.current.contentWindow.document.close();
-
-                    const queries = data.queries ?? [];
-                    setQueryLog(queries);
-                })
-
-            setPreviewDisplay(value);
-        }
+        setPreviewDisplayTitle(title);
     }
 
-    const [previewDisplay, setPreviewDisplay] = useState('sqlSelectAll')
-    let [queryLog, setQueryLog] = useState([]);
+    const [previewDisplayTitle, setPreviewDisplayTitle] = useState('SQL: Select All')
+    const [queryLog, setQueryLog] = useState([]);
 
     return (
         <WorkbookLayout
@@ -82,42 +106,31 @@ export default function SelectData({ }) {
 
             <div className="flex justify-between h-full w-full gap-x-3">
                 <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
-                    <h1 className='text-2xl my-2'>Selecting Data</h1>
-                    <h2 className='text-lg my-2'>Fetching all data</h2>
-                    <h3 className='font-bold my-2'>SQL</h3>
-                    <RunnableCodeBlock
-                        title='SQL'
-                        text={sqlSelectAll.join("\n")}
-                        previewCallback={() => changePreviewDisplay('sqlSelectAll')}
-                    />
-
-                    <h3 className='font-bold my-2'>ORM</h3>
-                    <RunnableCodeBlock
-                        title='SQL'
-                        text={ormSelectAll.join("\n")}
-                        previewCallback={() => changePreviewDisplay('ormSelectAll')}
-                    />
-
-                    <h2 className='text-lg my-2'>Find a record by ID</h2>
-                    <h3 className='font-bold my-2'>SQL</h3>
-                    <RunnableCodeBlock
-                        title='SQL'
-                        text={sqlSelectById.join("\n")}
-                        previewCallback={() => changePreviewDisplay('sqlSelectById')}
-                    />
-
-                    <h3 className='font-bold my-2'>ORM</h3>
-                    <RunnableCodeBlock
-                        title='SQL'
-                        text={ormSelectById.join("\n")}
-                        previewCallback={() => changePreviewDisplay('ormSelectById')}
-                    />
-
+                    {workbookContent.map((item, index) => {
+                        switch (item.type) {
+                            case 'h1':
+                                return <h1 key={index} className='text-2xl my-2'>{item.content}</h1>
+                            case 'h2':
+                                return <h2 key={index} className='text-lg my-2'>{item.content}</h2>
+                            case 'h3':
+                                return <h3 key={index} className='font-bold my-2'>{item.content}</h3>
+                            case 'p':
+                                return <p key={index} className='my-2'>{item.content}</p>
+                            case 'runnableCodeBlock':
+                                return <RunnableCodeBlock
+                                    key={index}
+                                    text={item.text.join("\n")}
+                                    previewCallback={() => loadPreviewDisplay(item.route, item.title)}
+                                />
+                            default:
+                                return <p key={index} className='my-2'>{item.content}</p>
+                        }
+                    })}
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow basis-0">
                     <div className="border-b-2 border-gray-300 text-2xl font-bold py-2 px-4">
-                        {previewDisplayConfig[previewDisplay].title}
+                        {previewDisplayTitle}
                     </div>
                     <div className="h-full flex flex-col">
                         <iframe
@@ -152,8 +165,6 @@ export default function SelectData({ }) {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're not logged in!</div> */}
         </WorkbookLayout>
     );
 }
