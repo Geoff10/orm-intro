@@ -64,7 +64,7 @@ class ExampleController extends Controller
                     ];
                 },
                 'ormSelectAll' => function (): array {
-                    $data = Book::all();
+                    $data = Book::get();
 
                     return [
                         'properties' => [
@@ -73,6 +73,32 @@ class ExampleController extends Controller
                         'table' => [
                             'headers' => array_keys($data->first()->toArray()),
                             'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
+                'sqlSelectById' => function (): array {
+                    $data = DB::select('SELECT * FROM books WHERE id = ?', [1]);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'ormSelectById' => function (): array {
+                    $data = Book::find(1);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->toArray()),
+                            'rows' => [$data->toArray()],
                         ],
                     ];
                 },
