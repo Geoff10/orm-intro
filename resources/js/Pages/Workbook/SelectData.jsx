@@ -62,6 +62,9 @@ export default function SelectData({ }) {
                     previewPane.current.contentWindow.document.open();
                     previewPane.current.contentWindow.document.write(data.results);
                     previewPane.current.contentWindow.document.close();
+
+                    const queries = data.queries ?? [];
+                    setQueryLog(queries);
                 })
 
             setPreviewDisplay(value);
@@ -69,6 +72,7 @@ export default function SelectData({ }) {
     }
 
     const [previewDisplay, setPreviewDisplay] = useState('sqlSelectAll')
+    let [queryLog, setQueryLog] = useState([]);
 
     return (
         <WorkbookLayout
@@ -77,7 +81,7 @@ export default function SelectData({ }) {
             <Head title="Selecting Data" />
 
             <div className="flex justify-between h-full w-full gap-x-3">
-                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow p-4">
+                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
                     <h1 className='text-2xl my-2'>Selecting Data</h1>
                     <h2 className='text-lg my-2'>Fetching all data</h2>
                     <h3 className='font-bold my-2'>SQL</h3>
@@ -111,17 +115,40 @@ export default function SelectData({ }) {
 
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow">
+                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow basis-0">
                     <div className="border-b-2 border-gray-300 text-2xl font-bold py-2 px-4">
                         {previewDisplayConfig[previewDisplay].title}
                     </div>
-                    <div className="h-full">
+                    <div className="h-full flex flex-col">
                         <iframe
                             // src={previewDisplayConfig[previewDisplay].previewUrl}
                             ref={previewPane}
                             frameborder="0"
-                            className='w-full h-full'
+                            className='w-full flex-grow'
                         />
+                        <div className="h-12 w-full grow">
+                            <div className='border-t border-b border-gray-500 py-2'>
+                                Queries Executed: {queryLog.length}
+                            </div>
+                            <table className='w-full'>
+                                <thead>
+                                    <tr className='text-left'>
+                                        <th>Query</th>
+                                        <th>Bindings</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {queryLog.map((query, index) => (
+                                        <tr key={index}>
+                                            <td>{query.query}</td>
+                                            <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td>
+                                            <td>{query.time}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
