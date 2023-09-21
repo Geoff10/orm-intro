@@ -4,96 +4,11 @@ import { Head } from '@inertiajs/react';
 import { useState, useRef } from 'react';
 import axios from 'axios';
 
-export default function SelectData({ }) {
+export default function SelectData({ workbook }) {
     const previewPane = useRef(null);
 
-    const module = 'sqlSelectData';
-    const workbookContent = [
-        {
-            type: 'h1',
-            content: 'Selecting Data',
-        },
-        {
-            type: 'h2',
-            content: 'Fetching all data',
-        },
-        {
-            type: 'h3',
-            content: 'SQL',
-        },
-        {
-            type: 'p',
-            content: 'The SQL statement to fetch all data from a table is:',
-        },
-        {
-            type: 'runnableCodeBlock',
-            title: 'SQL: Select All',
-            text: [
-                "$query = $this->db->prepare('SELECT * FROM species;');",
-                '$query->setFetchMode(PDO::FETCH_ASSOC);',
-                '$query->execute();',
-                '',
-                'return $query->fetchAll();',
-            ],
-            route: route('example', {module, exercise: 'sqlSelectAll'}),
-        },
-        {
-            type: 'h3',
-            content: 'ORM',
-        },
-        {
-            type: 'p',
-            content: 'The ORM statement to fetch all data from a table is:',
-        },
-        {
-            type: 'runnableCodeBlock',
-            title: 'ORM: Select All',
-            text: [
-                'return Species::get();',
-            ],
-            route: route('example', {module, exercise: 'ormSelectAll'}),
-        },
-        {
-            type: 'h2',
-            content: 'Find a record by ID',
-        },
-        {
-            type: 'h3',
-            content: 'SQL',
-        },
-        {
-            type: 'p',
-            content: 'The SQL statement to fetch a record by ID from a table is:',
-        },
-        {
-            type: 'runnableCodeBlock',
-            title: 'SQL: Select By ID',
-            text: [
-                "$query = $this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
-                '$query->setFetchMode(PDO::FETCH_ASSOC);',
-                "$query->execute(['id' => $id]);",
-                '',
-                'return $query->fetch();',
-            ],
-            route: route('example', {module, exercise: 'sqlSelectById'}),
-        },
-        {
-            type: 'h3',
-            content: 'ORM',
-        },
-        {
-            type: 'p',
-            content: 'The ORM statement to fetch a record by ID from a table is:',
-        },
-        {
-            type: 'runnableCodeBlock',
-            title: 'ORM: Select By ID',
-            text: [
-                'return Book::find(1);',
-            ],
-            route: route('example', {module, exercise: 'ormSelectById'}),
-        },
-    ];
+    const [previewDisplayTitle, setPreviewDisplayTitle] = useState('');
+    const [queryLog, setQueryLog] = useState([]);
 
     const loadPreviewDisplay = (url, title) => {
         axios.get(url)
@@ -110,18 +25,15 @@ export default function SelectData({ }) {
         setPreviewDisplayTitle(title);
     }
 
-    const [previewDisplayTitle, setPreviewDisplayTitle] = useState('SQL: Select All')
-    const [queryLog, setQueryLog] = useState([]);
-
     return (
         <WorkbookLayout
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
         >
-            <Head title="Selecting Data" />
+            <Head title={workbook.title} />
 
             <div className="flex justify-between h-full w-full gap-x-3">
                 <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
-                    {workbookContent.map((item, index) => {
+                    {workbook.content.map((item, index) => {
                         switch (item.type) {
                             case 'h1':
                                 return <h1 key={index} className='text-2xl my-2'>{item.content}</h1>
