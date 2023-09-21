@@ -22,6 +22,10 @@ export default function SelectData({ }) {
             content: 'SQL',
         },
         {
+            type: 'p',
+            content: 'The SQL statement to fetch all data from a table is:',
+        },
+        {
             type: 'runnableCodeBlock',
             title: 'SQL: Select All',
             text: [
@@ -36,6 +40,10 @@ export default function SelectData({ }) {
         {
             type: 'h3',
             content: 'ORM',
+        },
+        {
+            type: 'p',
+            content: 'The ORM statement to fetch all data from a table is:',
         },
         {
             type: 'runnableCodeBlock',
@@ -54,6 +62,10 @@ export default function SelectData({ }) {
             content: 'SQL',
         },
         {
+            type: 'p',
+            content: 'The SQL statement to fetch a record by ID from a table is:',
+        },
+        {
             type: 'runnableCodeBlock',
             title: 'SQL: Select By ID',
             text: [
@@ -68,6 +80,10 @@ export default function SelectData({ }) {
         {
             type: 'h3',
             content: 'ORM',
+        },
+        {
+            type: 'p',
+            content: 'The ORM statement to fetch a record by ID from a table is:',
         },
         {
             type: 'runnableCodeBlock',
