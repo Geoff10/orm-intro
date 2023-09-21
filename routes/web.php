@@ -3,6 +3,7 @@
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Workbook\SelectDataController;
+use App\Http\Controllers\Workbook\WorkbookController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,7 @@ Route::get('/', function () {
 });
 
 Route::get('workbook/selecting-data', SelectDataController::class);
+Route::get('workbook/{workbook}', WorkbookController::class)->name('workbook');
 
 Route::get('example/{module}/{exercise}', ExampleController::class)
     ->name('example');
