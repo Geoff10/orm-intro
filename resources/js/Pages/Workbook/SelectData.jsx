@@ -83,7 +83,6 @@ export default function SelectData({ }) {
         axios.get(url)
             .then((response) => response.data)
             .then((data) => {
-                // console.log(data);
                 previewPane.current.contentWindow.document.open();
                 previewPane.current.contentWindow.document.write(data.results);
                 previewPane.current.contentWindow.document.close();
@@ -134,7 +133,6 @@ export default function SelectData({ }) {
                     </div>
                     <div className="h-full flex flex-col">
                         <iframe
-                            // src={previewDisplayConfig[previewDisplay].previewUrl}
                             ref={previewPane}
                             frameborder="0"
                             className='w-full flex-grow'
