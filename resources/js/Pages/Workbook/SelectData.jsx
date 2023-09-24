@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/react';
 import { useState, useRef } from 'react';
 import axios from 'axios';
 
-export default function SelectData({ workbook }) {
+export default function SelectData({ workbook, chapter, previous_chapter, next_chapter }) {
     const previewPane = useRef(null);
 
     const [previewDisplayTitle, setPreviewDisplayTitle] = useState('');
@@ -29,11 +29,11 @@ export default function SelectData({ workbook }) {
         <WorkbookLayout
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
         >
-            <Head title={workbook.title} />
+            <Head title={chapter.title} />
 
             <div className="flex justify-between h-full w-full gap-x-3">
                 <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
-                    {workbook.content.map((item, index) => {
+                    {chapter.content.map((item, index) => {
                         switch (item.type) {
                             case 'h1':
                                 return <h1 key={index} className='text-2xl my-2'>{item.content}</h1>
@@ -53,6 +53,26 @@ export default function SelectData({ workbook }) {
                                 return <p key={index} className='my-2'>{item.content}</p>
                         }
                     })}
+                    <div class="flex justify-between border-t border-gray-300 mt-2">
+                        <div class="basis-0 flex-grow text-left">
+                            {previous_chapter && (
+                                <a
+                                    href={route('workbook', {workbook: workbook.id, chapter: previous_chapter.id})}
+                                    className="text-blue-500 hover:text-blue-700">
+                                        &lt; Back: { previous_chapter.title }
+                                </a>
+                            )}
+                        </div>
+                        <div class="basis-0 flex-grow text-right">
+                            {next_chapter && (
+                                <a
+                                    href={route('workbook', {workbook: workbook.id, chapter: next_chapter.id})}
+                                    className="text-blue-500 hover:text-blue-700">
+                                        Next: { next_chapter.title } &gt;
+                                </a>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow basis-0">
