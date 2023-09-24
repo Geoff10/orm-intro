@@ -43,8 +43,6 @@ class WorkbookController extends Controller
             ]);
         }
 
-        return Inertia::render('Workbook/SelectData', [
-            'workbook' => (new $workbook)->toArray(),
-        ]);
+        return abort(404);
     }
 }

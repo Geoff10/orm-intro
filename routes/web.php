@@ -30,7 +30,6 @@ Route::get('/', function () {
 
 Route::get('workbook/selecting-data', SelectDataController::class);
 Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook');
-Route::get('workbook/{workbook}', WorkbookController::class)->name('workbook_legacy');
 
 Route::get('example/{module}/{exercise}', ExampleController::class)
     ->name('example');
