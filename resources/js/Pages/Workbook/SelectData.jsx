@@ -27,6 +27,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
 
     return (
         <WorkbookLayout
+            title={chapter.title}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
         >
             <Head title={chapter.title} />
