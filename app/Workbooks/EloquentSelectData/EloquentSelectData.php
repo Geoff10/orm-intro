@@ -8,6 +8,7 @@ use App\Workbooks\EloquentSelectData\Chapters\FilteringDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataByIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectSpecificColumnsChapter;
+use App\Workbooks\EloquentSelectData\Chapters\SortingDataChapter;
 use App\Workbooks\Workbook;
 
 class EloquentSelectData extends Workbook
@@ -34,6 +35,7 @@ class EloquentSelectData extends Workbook
             new SelectSpecificColumnsChapter(),
             new SelectDataByIdChapter(),
             new FilteringDataChapter(),
+            new SortingDataChapter(),
         ];
     }
 }
