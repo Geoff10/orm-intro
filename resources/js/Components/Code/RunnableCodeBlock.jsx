@@ -15,7 +15,7 @@ export default function RunnableCodeBlock({ className = '', title, text, preview
     ]
     return (
         <div className="border border-gray-400 rounded">
-            <div className="bg-gray-800">
+            <div className="bg-gray-800 font-mono">
                 <CodeBlock
                     language='php'
                     showLineNumbers
