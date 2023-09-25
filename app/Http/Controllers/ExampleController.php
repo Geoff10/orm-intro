@@ -18,9 +18,17 @@ class ExampleController extends Controller
         $example = $this->getExample($module, $exercise);
 
         if ($example) {
-            $results = view('results', [
-                'results' => $example(),
-            ])->render();
+            try {
+                $results = view('results', [
+                    'results' => $example(),
+                ])->render();
+
+            } catch (\Throwable $th) {
+                $results = view('exception', [
+                    'type' => get_class($th),
+                    'message' => $th->getMessage(),
+                ])->render();
+            }
 
             return response()->json([
                 'results' => $results,
