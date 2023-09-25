@@ -252,7 +252,7 @@ class ExampleController extends Controller
                     DB::beginTransaction();
 
                     DB::insert('INSERT INTO books (title, author_id, release_date, genre) VALUES (?, ?, ?, ?)', [
-                        'New book SQL',
+                        'New book',
                         1,
                         now(),
                         'Non-fiction',
@@ -276,7 +276,7 @@ class ExampleController extends Controller
                     DB::beginTransaction();
 
                     Book::create([
-                        'title' => 'New book ORM',
+                        'title' => 'New book',
                         'author_id' => 1,
                         'release_date' => now(),
                         'genre' => 'Non-fiction',

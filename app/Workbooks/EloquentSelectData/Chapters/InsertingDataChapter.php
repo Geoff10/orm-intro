@@ -26,6 +26,19 @@ class InsertingDataChapter extends Chapter
                 "content" => "Inserting Data",
             ],
             [
+                "type" => "p",
+                "content" => "Here is an array of data that needs to be inserted into the database.",
+            ],
+            [
+                "type" => "codeBlock",
+                "text" => "\$book = [
+    'title' => 'New book',
+    'author' => 1,
+    'release_date' => date('Y-m-d'),
+    'genre' => 'Non-fiction',
+]",
+            ],
+            [
                 "type" => "h3",
                 "content" => "SQL",
             ],
@@ -38,12 +51,7 @@ class InsertingDataChapter extends Chapter
                 "title" => "SQL: Filter Data",
                 "text" => [
                     "\$query = \$this->db->prepare('INSERT INTO books (title, author, release_date, genre) VALUES (:title, :author, :release_date, :genre);');",
-                    "\$query->execute([",
-                    "\t'title' => 'New book SQL',",
-                    "\t'author_id' => 1,",
-                    "\t'release_date' => date('Y-m-d'),",
-                    "\t'genre' => 'Non-fiction',",
-                    "]);",
+                    '$query->execute($book);',
                 ],
                 "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlInsertData']),
             ],
@@ -59,12 +67,7 @@ class InsertingDataChapter extends Chapter
                 "type" => "runnableCodeBlock",
                 "title" => "ORM: Filter Data",
                 "text" => [
-                    'Book::create([',
-                    "\t'title' => 'New book ORM',",
-                    "\t'author' => 1,",
-                    "\t'release_date' => date('Y-m-d'),",
-                    "\t'genre' => 'Non-fiction',",
-                    ']);',
+                    'Book::create($book);',
                 ],
                 "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormInsertData']),
             ],
