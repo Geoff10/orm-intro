@@ -8,8 +8,6 @@ abstract class Workbook
 {
     abstract public function id(): string;
     abstract public function title(): string;
-    // Todo: content no longer needed
-    abstract public function content(): array;
     abstract protected function chapters(): array;
 
     public function toArray(): array
@@ -17,7 +15,6 @@ abstract class Workbook
         return [
             'id' => $this->id(),
             'title' => $this->title(),
-            'content' => $this->content(),
             'chapters' => $this->getChapters(),
         ];
     }

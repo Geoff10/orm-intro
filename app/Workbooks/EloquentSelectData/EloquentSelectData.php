@@ -26,11 +26,6 @@ class EloquentSelectData extends Workbook
         return 'Eloquent Select Data';
     }
 
-    public function content(): array
-    {
-        return [];
-    }
-
     public function chapters(): array
     {
         return [
