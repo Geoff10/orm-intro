@@ -22,10 +22,6 @@ class SelectDataByIdChapter extends Chapter
     {
         return [
             [
-                "type" => "h1",
-                "content" => "Selecting Data By ID"
-            ],
-            [
                 "type" => "h2",
                 "content" => "Find a record by ID",
             ],

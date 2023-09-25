@@ -22,10 +22,6 @@ class SelectDataChapter extends Chapter
     {
         return [
             [
-                "type" => "h1",
-                "content" => "Selecting Data"
-            ],
-            [
                 "type" => "h2",
                 "content" => "Fetching all data",
             ],
