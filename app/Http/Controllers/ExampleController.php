@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -236,6 +237,54 @@ class ExampleController extends Controller
                 },
                 'ormSortDataDescending' => function (): array {
                     $data = Book::orderBy('release_date', 'desc')->get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
+                'sqlInsertData' => function (): array {
+                    DB::beginTransaction();
+
+                    DB::insert('INSERT INTO books (title, author_id, release_date, genre) VALUES (?, ?, ?, ?)', [
+                        'New book SQL',
+                        1,
+                        now(),
+                        'Non-fiction',
+                    ]);
+
+                    $data = DB::select('SELECT * FROM books ORDER BY id DESC');
+
+                    DB::rollBack();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'ormInsertData' => function (): array {
+                    DB::beginTransaction();
+
+                    Book::create([
+                        'title' => 'New book ORM',
+                        'author_id' => 1,
+                        'release_date' => now(),
+                        'genre' => 'Non-fiction',
+                    ]);
+
+                    $data = Book::orderBy('id', 'desc')->get();
+
+                    DB::rollBack();
 
                     return [
                         'properties' => [
