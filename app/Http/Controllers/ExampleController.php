@@ -324,6 +324,78 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
+                'sqlInsertDataGetLastInsertId' => function (): array {
+                    DB::beginTransaction();
+
+                    DB::insert('INSERT INTO books (title, author_id, release_date, genre) VALUES (?, ?, ?, ?)', [
+                        'New book',
+                        1,
+                        now(),
+                        'Non-fiction',
+                    ]);
+
+                    $data = [['id' => DB::getPdo()->lastInsertId()]];
+
+                    DB::rollBack();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'ormInsertDataGetLastInsertId' => function (): array {
+                    DB::beginTransaction();
+
+                    $data = Book::create([
+                        'title' => 'New book',
+                        'author_id' => 1,
+                        'release_date' => now(),
+                        'genre' => 'Non-fiction',
+                    ]);
+
+                    $data = [$data->toArray()];
+
+                    DB::rollBack();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'sqlInsertDataGetLastInsertRecord' => function (): array {
+                    DB::beginTransaction();
+
+                    DB::insert('INSERT INTO books (title, author_id, release_date, genre) VALUES (?, ?, ?, ?)', [
+                        'New book',
+                        1,
+                        now(),
+                        'Non-fiction',
+                    ]);
+
+                    $data = DB::select('SELECT * FROM books ORDER BY id DESC LIMIT 1');
+
+                    DB::rollBack();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => [$data[0]],
+                        ],
+                    ];
+                },
                 'sqlBulkInsertData' => function (): array {
                     $books = [
                         [

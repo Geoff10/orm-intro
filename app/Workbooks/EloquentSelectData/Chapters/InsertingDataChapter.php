@@ -33,7 +33,7 @@ class InsertingDataChapter extends Chapter
                 "type" => "codeBlock",
                 "text" => "\$book = [
     'title' => 'New book',
-    'author' => 1,
+    'author_id' => 1,
     'release_date' => date('Y-m-d'),
     'genre' => 'Non-fiction',
 ]",
@@ -42,15 +42,11 @@ class InsertingDataChapter extends Chapter
                 "type" => "h3",
                 "content" => "SQL",
             ],
-            // [
-            //     "type" => "p",
-            //     "content" => "The SQL statement to fetch all data from a table is:",
-            // ],
             [
                 "type" => "runnableCodeBlock",
                 "title" => "SQL: Insert Data",
                 "text" => [
-                    "\$query = \$this->db->prepare('INSERT INTO books (title, author, release_date, genre) VALUES (:title, :author, :release_date, :genre);');",
+                    "\$query = \$this->db->prepare('INSERT INTO books (title, author_id, release_date, genre) VALUES (:title, :author_id, :release_date, :genre);');",
                     '$query->execute($book);',
                 ],
                 "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlInsertData']),
@@ -59,10 +55,6 @@ class InsertingDataChapter extends Chapter
                 "type" => "h3",
                 "content" => "ORM",
             ],
-            // [
-            //     "type" => "p",
-            //     "content" => "The ORM statement to fetch all data from a table is:",
-            // ],
             [
                 "type" => "runnableCodeBlock",
                 "title" => "ORM: Insert Data",
@@ -71,7 +63,6 @@ class InsertingDataChapter extends Chapter
                 ],
                 "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormInsertData']),
             ],
-            // Todo: Add a another section on getting the ID of the inserted record
         ];
     }
 }
