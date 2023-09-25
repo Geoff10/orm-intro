@@ -11,8 +11,14 @@ export default function Workbook({ title, children }) {
                         </div>
                         <div className="flex">
                             <div className="space-x-8 sm:-my-px sm:ml-10 flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
+                                <NavLink href={route('workbook', {workbook: 'eloquentSelectData', chapter: 'selectData'})}>
+                                    Selects
+                                </NavLink>
+                                <NavLink href={route('workbook', {workbook: 'eloquentSelectData', chapter: 'insertingData'})}>
+                                    Inserts
+                                </NavLink>
+                                <NavLink href={route('workbook', {workbook: 'eloquentSelectData', chapter: 'queryingRelatedData'})}>
+                                    Relationships
                                 </NavLink>
                             </div>
                         </div>
