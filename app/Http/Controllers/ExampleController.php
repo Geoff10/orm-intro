@@ -296,6 +296,95 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
+                'sqlBulkInsertData' => function (): array {
+                    $books = [
+                        [
+                            'title' => 'New book',
+                            'author' => 1,
+                            'release_date' => date('Y-m-d'),
+                            'genre' => 'Non-fiction',
+                        ],
+                        [
+                            'title' => 'New SQL book',
+                            'author' => 2,
+                            'release_date' => date('Y-m-d'),
+                            'genre' => 'Non-fiction',
+                        ],
+                        [
+                            'title' => 'New ORM book',
+                            'author' => 3,
+                            'release_date' => date('Y-m-d'),
+                            'genre' => 'Non-fiction',
+                        ],
+                    ];
+
+                    DB::beginTransaction();
+
+                    foreach ($books as $book) {
+                        DB::insert('INSERT INTO books (title, author_id, release_date, genre) VALUES (?, ?, ?, ?)', [
+                            $book['title'],
+                            $book['author'],
+                            $book['release_date'],
+                            $book['genre'],
+                        ]);
+                    }
+
+                    $data = DB::select('SELECT * FROM books ORDER BY id DESC');
+
+                    DB::rollBack();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'ormBulkInsertData' => function (): array {
+                    $books = [
+                        [
+                            'title' => 'New book',
+                            'author_id' => 1,
+                            'release_date' => date('Y-m-d'),
+                            'genre' => 'Non-fiction',
+                        ],
+                        [
+                            'title' => 'New SQL book',
+                            'author_id' => 2,
+                            'release_date' => date('Y-m-d'),
+                            'genre' => 'Non-fiction',
+                        ],
+                        [
+                            'title' => 'New ORM book',
+                            'author_id' => 3,
+                            'release_date' => date('Y-m-d'),
+                            'genre' => 'Non-fiction',
+                        ],
+                    ];
+
+                    DB::beginTransaction();
+
+                    foreach ($books as $book) {
+                        Book::create($book);
+                    }
+
+                    $data = Book::orderBy('id', 'desc')->get();
+
+                    DB::rollBack();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
             ],
         ];
     }
