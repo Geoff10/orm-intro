@@ -48,7 +48,7 @@ class InsertingDataChapter extends Chapter
             // ],
             [
                 "type" => "runnableCodeBlock",
-                "title" => "SQL: Filter Data",
+                "title" => "SQL: Insert Data",
                 "text" => [
                     "\$query = \$this->db->prepare('INSERT INTO books (title, author, release_date, genre) VALUES (:title, :author, :release_date, :genre);');",
                     '$query->execute($book);',
@@ -65,7 +65,7 @@ class InsertingDataChapter extends Chapter
             // ],
             [
                 "type" => "runnableCodeBlock",
-                "title" => "ORM: Filter Data",
+                "title" => "ORM: Insert Data",
                 "text" => [
                     'Book::create($book);',
                 ],
