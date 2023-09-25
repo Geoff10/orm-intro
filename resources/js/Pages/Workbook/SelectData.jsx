@@ -103,11 +103,9 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                             <div className='border-t border-b border-gray-500 py-2'>
                                 Queries Executed: {queryLog.length}
                             </div>
-                            {/* TODO: Scrolling does not work */}
                             {/* TODO: Squash the bindings and the query */}
-                            {/* TODO: Add some spacing between rows */}
                             <div className='grow overflow-y-auto'>
-                                <table className='w-full'>
+                                <table className='w-full text-lg mb-4'>
                                     <thead>
                                         <tr className='text-left'>
                                             <th>Query</th>
@@ -117,8 +115,8 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                                     </thead>
                                     <tbody>
                                         {queryLog.map((query, index) => (
-                                            <tr key={index}>
-                                                <td>{query.query}</td>
+                                            <tr key={index} className={index % 2 == 0 ? 'bg-slate-200' : ''}>
+                                                <td className='py-1'>{query.query}</td>
                                                 <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td>
                                                 <td>{query.time}</td>
                                             </tr>
