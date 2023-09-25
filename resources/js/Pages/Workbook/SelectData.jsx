@@ -103,21 +103,21 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                             <div className='border-t border-b border-gray-500 py-2'>
                                 Queries Executed: {queryLog.length}
                             </div>
-                            {/* TODO: Squash the bindings and the query */}
                             <div className='grow overflow-y-auto'>
                                 <table className='w-full text-lg mb-4'>
                                     <thead>
                                         <tr className='text-left'>
                                             <th>Query</th>
-                                            <th>Bindings</th>
+                                            {/* <th>Bindings</th> */}
                                             <th>Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {queryLog.map((query, index) => (
                                             <tr key={index} className={index % 2 == 0 ? 'bg-slate-200' : ''}>
-                                                <td className='py-1'>{query.query}</td>
-                                                <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td>
+                                                <td className='py-1'>{query.sql}</td>
+                                                {/* <td className='py-1'>{query.query}</td>
+                                                <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td> */}
                                                 <td>{query.time}</td>
                                             </tr>
                                         ))}

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ExampleController extends Controller
 {
@@ -31,9 +31,37 @@ class ExampleController extends Controller
                 ])->render();
             }
 
+            $queryLog = collect(DB::getQueryLog())
+                ->map(function ($query) {
+                    $bindings = array_map(function ($binding) use (&$count) {
+                        if ($binding instanceof \DateTimeInterface) {
+                            $format = $binding->format('Y-m-d H:i:s');
+                            return "'{$format}'";
+                        }
+
+                        if (is_string($binding)) {
+                            return "'{$binding}'";
+                        }
+
+                        if (is_bool($binding)) {
+                            return $binding ? 'true' : 'false';
+                        }
+
+                        if (is_null($binding)) {
+                            return 'null';
+                        }
+
+                        return $binding;
+                    }, $query['bindings']);
+
+                    $query['sql'] = Str::replaceArray('?', $bindings, $query['query']);
+
+                    return $query;
+                });
+
             return response()->json([
                 'results' => $results,
-                'queries' => DB::getQueryLog(),
+                'queries' => $queryLog,
             ]);
         }
 
