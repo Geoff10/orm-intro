@@ -110,6 +110,36 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
+                'sqlSelectByIdOrFail' => function (): array {
+                    $result = DB::select('SELECT * FROM books WHERE id = ?', [-1]);
+
+                    if (!$result) {
+                        throw new ModelNotFoundException('Id not found');
+                    }
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys([]),
+                            'rows' => [],
+                        ],
+                    ];
+                },
+                'ormSelectByIdOrFail' => function (): array {
+                    $data = Book::findOrFail(-1);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->toArray()),
+                            'rows' => [$data->toArray()],
+                        ],
+                    ];
+                },
             ],
         ];
     }

@@ -65,6 +65,52 @@ class SelectDataByIdChapter extends Chapter
                 ],
                 "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectById']),
             ],
+            [
+                "type" => "h2",
+                "content" => "Find a record by ID or fail",
+            ],
+            [
+                "type" => "h3",
+                "content" => "SQL",
+            ],
+            [
+                "type" => "p",
+                "content" => "The SQL statement to fetch a record by ID from a table, and fail if it doesn't exist, is:",
+            ],
+            [
+                "type" => "runnableCodeBlock",
+                "title" => "SQL: Select By ID or Fail",
+                "text" => [
+                    "\$query = \$this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
+                    '$query->setFetchMode(PDO::FETCH_ASSOC);',
+                    "\$query->execute(['id' => \$id]);",
+                    '',
+                    '$result = $query->fetch();',
+                    '',
+                    'if (!$result) {',
+                    '    throw new ModelNotFoundException("Id not found");',
+                    '}',
+                    '',
+                    'return $result;',
+                ],
+                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlSelectByIdOrFail']),
+            ],
+            [
+                "type" => "h3",
+                "content" => "ORM",
+            ],
+            [
+                "type" => "p",
+                "content" => "The ORM statement to fetch a record by ID from a table, and fail if it doesn't exist, is:",
+            ],
+            [
+                "type" => "runnableCodeBlock",
+                "title" => "ORM: Select By ID or Fail",
+                "text" => [
+                    'return Book::findOrFail(1);',
+                ],
+                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectByIdOrFail']),
+            ],
         ];
     }
 }
