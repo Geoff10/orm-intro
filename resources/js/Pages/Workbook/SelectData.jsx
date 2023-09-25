@@ -103,6 +103,9 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                             <div className='border-t border-b border-gray-500 py-2'>
                                 Queries Executed: {queryLog.length}
                             </div>
+                            {/* TODO: Scrolling does not work */}
+                            {/* TODO: Squash the bindings and the query */}
+                            {/* TODO: Add some spacing between rows */}
                             <table className='w-full'>
                                 <thead>
                                     <tr className='text-left'>
