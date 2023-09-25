@@ -2,6 +2,7 @@ import WorkbookLayout from '@/Layouts/WorkbookLayout';
 import RunnableCodeBlock from '@/Components/Code/RunnableCodeBlock';
 import { Head } from '@inertiajs/react';
 import { useState, useRef } from 'react';
+import { CodeBlock, dracula } from "react-code-blocks";
 import axios from 'axios';
 
 export default function SelectData({ workbook, chapter, previous_chapter, next_chapter }) {
@@ -34,6 +35,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
 
             <div className="flex justify-between h-full w-full gap-x-3">
                 <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
+                    {console.log(chapter.content)}
                     {chapter.content.map((item, index) => {
                         switch (item.type) {
                             case 'h1':
@@ -50,6 +52,17 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                                     text={item.text.join("\n")}
                                     previewCallback={() => loadPreviewDisplay(item.route, item.title)}
                                 />
+                            case 'codeBlock':
+                                return <div className="font-mono" key={index}>
+                                    <CodeBlock
+                                        language='php'
+                                        showLineNumbers
+                                        theme={dracula}
+                                        wrapLines
+                                        text={item.text}
+                                        className='rounded-b-none'
+                                    />
+                                </div>
                             default:
                                 return <p key={index} className='my-2'>{item.content}</p>
                         }
