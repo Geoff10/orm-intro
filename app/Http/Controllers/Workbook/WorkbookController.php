@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Workbook;
 
 use App\Http\Controllers\Controller;
 use App\Workbooks\EloquentSelectData\EloquentSelectData;
-use App\Workbooks\SelectData;
-use App\Workbooks\SelectDataById;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,8 +12,6 @@ class WorkbookController extends Controller
     // TODO: Key this dynamically from the workbooks IDs
     private $workbooks = [
         'eloquentSelectData' => EloquentSelectData::class,
-        'selectData' => SelectData::class,
-        'selectDataById' => SelectDataById::class,
     ];
 
     public function __invoke(string $workbook, ?string $chapter): Response
