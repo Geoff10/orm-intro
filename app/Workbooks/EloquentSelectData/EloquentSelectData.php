@@ -6,6 +6,7 @@ namespace App\Workbooks\EloquentSelectData;
 
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataByIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataChapter;
+use App\Workbooks\EloquentSelectData\Chapters\SelectSpecificColumnsChapter;
 use App\Workbooks\Workbook;
 
 class EloquentSelectData extends Workbook
@@ -29,6 +30,7 @@ class EloquentSelectData extends Workbook
     {
         return [
             new SelectDataChapter(),
+            new SelectSpecificColumnsChapter(),
             new SelectDataByIdChapter(),
         ];
     }

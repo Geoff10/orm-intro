@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class ExampleController extends Controller
@@ -137,6 +137,32 @@ class ExampleController extends Controller
                         'table' => [
                             'headers' => array_keys($data->toArray()),
                             'rows' => [$data->toArray()],
+                        ],
+                    ];
+                },
+                'sqlSelectChooseColumns' => function (): array {
+                    $data = DB::select('SELECT title, genre, release_date FROM books');
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'ormSelectChooseColumns' => function (): array {
+                    $data = Book::select('title', 'genre', 'release_date')->get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
                         ],
                     ];
                 },
