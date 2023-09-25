@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Workbooks\EloquentSelectData;
 
+use App\Workbooks\EloquentSelectData\Chapters\FilteringDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataByIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectSpecificColumnsChapter;
@@ -32,6 +33,7 @@ class EloquentSelectData extends Workbook
             new SelectDataChapter(),
             new SelectSpecificColumnsChapter(),
             new SelectDataByIdChapter(),
+            new FilteringDataChapter(),
         ];
     }
 }
