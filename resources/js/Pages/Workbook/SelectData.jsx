@@ -37,11 +37,11 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                     {chapter.content.map((item, index) => {
                         switch (item.type) {
                             case 'h1':
-                                return <h1 key={index} className='text-2xl my-2'>{item.content}</h1>
+                                return <h1 key={index} className='text-3xl my-2'>{item.content}</h1>
                             case 'h2':
-                                return <h2 key={index} className='text-lg my-2'>{item.content}</h2>
+                                return <h2 key={index} className='text-2xl my-2'>{item.content}</h2>
                             case 'h3':
-                                return <h3 key={index} className='font-bold my-2'>{item.content}</h3>
+                                return <h3 key={index} className='font-bold text-lg my-2'>{item.content}</h3>
                             case 'p':
                                 return <p key={index} className='my-2'>{item.content}</p>
                             case 'runnableCodeBlock':
