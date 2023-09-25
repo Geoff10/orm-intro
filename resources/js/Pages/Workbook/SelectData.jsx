@@ -1,6 +1,6 @@
 import WorkbookLayout from '@/Layouts/WorkbookLayout';
 import RunnableCodeBlock from '@/Components/Code/RunnableCodeBlock';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState, useRef } from 'react';
 import { CodeBlock, dracula } from "react-code-blocks";
 import axios from 'axios';
@@ -70,20 +70,20 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                     <div class="flex justify-between border-t border-gray-300 mt-2">
                         <div class="basis-0 flex-grow text-left">
                             {previous_chapter && (
-                                <a
+                                <Link
                                     href={route('workbook', {workbook: workbook.id, chapter: previous_chapter.id})}
                                     className="text-blue-500 hover:text-blue-700">
                                         &lt; Back: { previous_chapter.title }
-                                </a>
+                                </Link>
                             )}
                         </div>
                         <div class="basis-0 flex-grow text-right">
                             {next_chapter && (
-                                <a
+                                <Link
                                     href={route('workbook', {workbook: workbook.id, chapter: next_chapter.id})}
                                     className="text-blue-500 hover:text-blue-700">
                                         Next: { next_chapter.title } &gt;
-                                </a>
+                                </Link>
                             )}
                         </div>
                     </div>
