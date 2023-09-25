@@ -99,31 +99,33 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                             frameborder="0"
                             className='w-full flex-grow'
                         />
-                        <div className="h-12 w-full grow">
+                        <div className="h-12 w-full grow flex flex-col">
                             <div className='border-t border-b border-gray-500 py-2'>
                                 Queries Executed: {queryLog.length}
                             </div>
                             {/* TODO: Scrolling does not work */}
                             {/* TODO: Squash the bindings and the query */}
                             {/* TODO: Add some spacing between rows */}
-                            <table className='w-full'>
-                                <thead>
-                                    <tr className='text-left'>
-                                        <th>Query</th>
-                                        <th>Bindings</th>
-                                        <th>Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {queryLog.map((query, index) => (
-                                        <tr key={index}>
-                                            <td>{query.query}</td>
-                                            <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td>
-                                            <td>{query.time}</td>
+                            <div className='grow overflow-y-auto'>
+                                <table className='w-full'>
+                                    <thead>
+                                        <tr className='text-left'>
+                                            <th>Query</th>
+                                            <th>Bindings</th>
+                                            <th>Time</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {queryLog.map((query, index) => (
+                                            <tr key={index}>
+                                                <td>{query.query}</td>
+                                                <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td>
+                                                <td>{query.time}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
