@@ -385,6 +385,65 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
+                'sqlSelectBooksAndAuthors' => function (): array {
+                    $data = DB::select('SELECT books.id, authors.name, books.title, books.genre, books.release_date FROM books INNER JOIN authors ON books.author_id = authors.id');
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
+                'ormSelectBooksAndAuthors' => function (): array {
+                    $data = Book::all();
+
+                    $data = $data->map(function ($book) {
+                        return [
+                            'id' => $book->id,
+                            'author' => $book->author->name,
+                            'title' => $book->title,
+                            'genre' => $book->genre,
+                            'release_date' => $book->release_date,
+                        ];
+                    });
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
+                'ormSelectBooksAndAuthorsEagerLoading' => function (): array {
+                    $data = Book::with('author')->get();
+
+                    $data = $data->map(function ($book) {
+                        return [
+                            'id' => $book->id,
+                            'author' => $book->author->name,
+                            'title' => $book->title,
+                            'genre' => $book->genre,
+                            'release_date' => $book->release_date,
+                        ];
+                    });
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM with eager loading',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
             ],
         ];
     }
