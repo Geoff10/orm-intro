@@ -10,6 +10,7 @@ use App\Workbooks\EloquentSelectData\Chapters\FilteringDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\GetLastInsertIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\InsertingDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\QueryingRelatedData;
+use App\Workbooks\EloquentSelectData\Chapters\ScopesChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataByIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\SelectSpecificColumnsChapter;
@@ -35,6 +36,7 @@ class EloquentSelectData extends Workbook
             new SelectSpecificColumnsChapter(),
             new SelectDataByIdChapter(),
             new FilteringDataChapter(),
+            new ScopesChapter(),
             new SortingDataChapter(),
             new InsertingDataChapter(),
             new GetLastInsertIdChapter(),

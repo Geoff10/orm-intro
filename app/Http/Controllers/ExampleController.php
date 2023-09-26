@@ -224,6 +224,19 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
+                'ormFilterDataUsingScope' => function (): array {
+                    $data = Book::twentiethCentury()->get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM with scope',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
                 'sqlSortData' => function (): array {
                     $data = DB::select('SELECT * FROM books ORDER BY release_date');
 
