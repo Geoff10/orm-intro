@@ -23,21 +23,21 @@ class SelectSpecificColumnsChapter extends Chapter
         return [
             [
                 "type" => "h2",
-                "content" => "Find a record by ID",
+                "content" => "Fetching Specific Columns",
             ],
             [
                 "type" => "h3",
                 "content" => "SQL",
             ],
-            [
-                "type" => "p",
-                "content" => "The SQL statement to fetch a record by ID from a table is:",
-            ],
+            // [
+            //     "type" => "p",
+            //     "content" => "The SQL statement to fetch a record by ID from a table is:",
+            // ],
             [
                 "type" => "runnableCodeBlock",
                 "title" => "SQL: Choose Columns to Select",
                 "text" => [
-                    "\$query = \$this->db->prepare('SELECT title, genre, release_date FROM species;');",
+                    "\$query = \$this->db->prepare('SELECT title, genre, release_date FROM books;');",
                     '$query->setFetchMode(PDO::FETCH_ASSOC);',
                     '$query->execute();',
                     '',
@@ -49,10 +49,10 @@ class SelectSpecificColumnsChapter extends Chapter
                 "type" => "h3",
                 "content" => "ORM",
             ],
-            [
-                "type" => "p",
-                "content" => "The ORM statement to fetch a record by ID from a table is:",
-            ],
+            // [
+            //     "type" => "p",
+            //     "content" => "The ORM statement to fetch a record by ID from a table is:",
+            // ],
             [
                 "type" => "runnableCodeBlock",
                 "title" => "ORM: Choose Columns to Select",

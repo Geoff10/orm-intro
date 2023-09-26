@@ -29,15 +29,15 @@ class SelectDataChapter extends Chapter
                 "type" => "h3",
                 "content" => "SQL",
             ],
-            [
-                "type" => "p",
-                "content" => "The SQL statement to fetch all data from a table is:",
-            ],
+            // [
+            //     "type" => "p",
+            //     "content" => "The SQL statement to fetch all data from a table is:",
+            // ],
             [
                 "type" => "runnableCodeBlock",
                 "title" => "SQL: Select All",
                 "text" => [
-                    "\$query = \$this->db->prepare('SELECT * FROM species;');",
+                    "\$query = \$this->db->prepare('SELECT * FROM books;');",
                     '$query->setFetchMode(PDO::FETCH_ASSOC);',
                     '$query->execute();',
                     '',
@@ -49,10 +49,10 @@ class SelectDataChapter extends Chapter
                 "type" => "h3",
                 "content" => "ORM",
             ],
-            [
-                "type" => "p",
-                "content" => "The ORM statement to fetch all data from a table is:",
-            ],
+            // [
+            //     "type" => "p",
+            //     "content" => "The ORM statement to fetch all data from a table is:",
+            // ],
             [
                 "type" => "runnableCodeBlock",
                 "title" => "ORM: Select All",

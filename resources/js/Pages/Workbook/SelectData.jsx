@@ -99,7 +99,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                             frameborder="0"
                             className='w-full flex-grow'
                         />
-                        <div className="h-12 w-full grow flex flex-col">
+                        <div className="h-24 w-full grow flex flex-col">
                             <div className='border-t border-b border-gray-500 py-2'>
                                 Queries Executed: {queryLog.length}
                             </div>

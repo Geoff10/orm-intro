@@ -40,7 +40,7 @@ class SelectDataController extends Controller
                     "type" => "runnableCodeBlock",
                     "title" => "SQL: Select All",
                     "text" => [
-                        "\$query = \$this->db->prepare('SELECT * FROM species;');",
+                        "\$query = \$this->db->prepare('SELECT * FROM books;');",
                         '$query->setFetchMode(PDO::FETCH_ASSOC);',
                         '$query->execute();',
                         '',
@@ -80,7 +80,7 @@ class SelectDataController extends Controller
                     "type" => "runnableCodeBlock",
                     "title" => "SQL: Select By ID",
                     "text" => [
-                        "\$query = \$this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
+                        "\$query = \$this->db->prepare('SELECT * FROM books WHERE `id` = :id');",
                         '$query->setFetchMode(PDO::FETCH_ASSOC);',
                         "\$query->execute(['id' => \$id]);",
                         '',

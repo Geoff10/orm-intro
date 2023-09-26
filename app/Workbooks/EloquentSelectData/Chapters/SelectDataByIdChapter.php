@@ -37,7 +37,7 @@ class SelectDataByIdChapter extends Chapter
                 "type" => "runnableCodeBlock",
                 "title" => "SQL: Select By ID",
                 "text" => [
-                    "\$query = \$this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
+                    "\$query = \$this->db->prepare('SELECT * FROM books WHERE `id` = :id');",
                     '$query->setFetchMode(PDO::FETCH_ASSOC);',
                     "\$query->execute(['id' => \$id]);",
                     '',
@@ -77,7 +77,7 @@ class SelectDataByIdChapter extends Chapter
                 "type" => "runnableCodeBlock",
                 "title" => "SQL: Select By ID or Fail",
                 "text" => [
-                    "\$query = \$this->db->prepare('SELECT * FROM species WHERE `id` = :id');",
+                    "\$query = \$this->db->prepare('SELECT * FROM books WHERE `id` = :id');",
                     '$query->setFetchMode(PDO::FETCH_ASSOC);',
                     "\$query->execute(['id' => \$id]);",
                     '',
