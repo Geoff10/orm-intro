@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Workbooks\EloquentSelectData;
 
 use App\Workbooks\EloquentSelectData\Chapters\BulkInsertingDataChapter;
+use App\Workbooks\EloquentSelectData\Chapters\BulkInsertingDataEfficientlyChapter;
 use App\Workbooks\EloquentSelectData\Chapters\FilteringDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\GetLastInsertIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\InsertingDataChapter;
@@ -38,6 +39,7 @@ class EloquentSelectData extends Workbook
             new InsertingDataChapter(),
             new GetLastInsertIdChapter(),
             new BulkInsertingDataChapter(),
+            new BulkInsertingDataEfficientlyChapter(),
             new QueryingRelatedData(),
         ];
     }
