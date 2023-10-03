@@ -19,14 +19,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::redirect('/', '/wb/eloquentSelectData/selectDataById');
 
 Route::get('workbook/selecting-data', SelectDataController::class);
 Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook');
