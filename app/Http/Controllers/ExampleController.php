@@ -289,6 +289,7 @@ class ExampleController extends Controller
                     ];
                 },
                 'ormFilterDataUsingScope' => function (): array {
+                    $data = Book::twentiethCentury()->get();
 
                     return [
                         'properties' => [
