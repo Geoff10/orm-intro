@@ -23,7 +23,6 @@ class ExampleController extends Controller
                 $results = view('results', [
                     'results' => $example(),
                 ])->render();
-
             } catch (\Throwable $th) {
                 $results = view('exception', [
                     'type' => get_class($th),
@@ -224,8 +223,72 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
+                'sqlFilterDataConditional' => function (): array {
+                    $filters = [
+                        'release_date' => '1955-01-01',
+                        'genre' => 'Fantasy',
+                    ];
+
+                    $parameters = [];
+                    $sql = 'SELECT * FROM books WHERE';
+
+                    if (isset($filters['release_date'])) {
+                        $sql .= ' release_date < :release_date AND';
+                        $parameters['release_date'] = $filters['release_date'];
+                    }
+
+                    if (isset($filters['genre'])) {
+                        $sql .= ' genre = :genre AND';
+                        $parameters['genre'] = $filters['genre'];
+                    }
+
+                    $sql = rtrim($sql, ' AND');
+
+                    $data = DB::select($sql, $parameters);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                        'sql' => $sql,
+                        'parameters' => $parameters,
+                    ];
+                },
+                'ormFilterDataConditional' => function (): array {
+                    $filters = [
+                        'release_date' => '1955-01-01',
+                        'genre' => 'Fantasy',
+                    ];
+
+                    $query = Book::query();
+
+                    if (isset($filters['release_date'])) {
+                        $query->where('release_date', '<', $filters['release_date']);
+                    }
+
+                    if (isset($filters['genre'])) {
+                        $query->where('genre', $filters['genre']);
+                    }
+
+                    $data = $query->get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                        'sql' => $query->toSql(),
+                        'parameters' => $query->getBindings(),
+                    ];
+                },
                 'ormFilterDataUsingScope' => function (): array {
-                    $data = Book::twentiethCentury()->get();
 
                     return [
                         'properties' => [

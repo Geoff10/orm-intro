@@ -6,6 +6,7 @@ namespace App\Workbooks\EloquentSelectData;
 
 use App\Workbooks\EloquentSelectData\Chapters\BulkInsertingDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\BulkInsertingDataEfficientlyChapter;
+use App\Workbooks\EloquentSelectData\Chapters\ConditionallyFilteringDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\FilteringDataChapter;
 use App\Workbooks\EloquentSelectData\Chapters\GetLastInsertIdChapter;
 use App\Workbooks\EloquentSelectData\Chapters\InsertingDataChapter;
@@ -36,6 +37,7 @@ class EloquentSelectData extends Workbook
             new SelectSpecificColumnsChapter(),
             new SelectDataByIdChapter(),
             new FilteringDataChapter(),
+            new ConditionallyFilteringDataChapter(),
             new ScopesChapter(),
             new SortingDataChapter(),
             new InsertingDataChapter(),
