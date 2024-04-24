@@ -91,7 +91,6 @@ class CreateUserCommandTest extends TestCase
         User::factory()->create([
             'name' => $user,
             'email' => $email,
-            'password' => 'password',
         ]);
 
         $this->artisan('app:user:create', [
