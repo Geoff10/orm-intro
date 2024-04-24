@@ -79,7 +79,7 @@ class SelectDataByIdChapter extends Chapter
                 "text" => [
                     "\$query = \$this->db->prepare('SELECT * FROM books WHERE `id` = :id');",
                     '$query->setFetchMode(PDO::FETCH_ASSOC);',
-                    "\$query->execute(['id' => \$id]);",
+                    "\$query->execute(['id' => -1]);",
                     '',
                     '$result = $query->fetch();',
                     '',
@@ -103,7 +103,7 @@ class SelectDataByIdChapter extends Chapter
                 "type" => "runnableCodeBlock",
                 "title" => "ORM: Select By ID or Fail",
                 "text" => [
-                    'return Book::findOrFail(1);',
+                    'return Book::findOrFail(-1);',
                 ],
                 "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectByIdOrFail']),
             ],
