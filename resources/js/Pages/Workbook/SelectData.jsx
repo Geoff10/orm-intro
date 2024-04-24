@@ -67,22 +67,22 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                                 return <p key={index} className='my-2'>{item.content}</p>
                         }
                     })}
-                    <div class="flex justify-between border-t border-gray-300 mt-2">
-                        <div class="basis-0 flex-grow text-left">
+                    <div className="flex justify-between border-t border-gray-300 mt-2">
+                        <div className="basis-0 flex-grow text-left">
                             {previous_chapter && (
                                 <Link
-                                    href={route('workbook', {workbook: workbook.id, chapter: previous_chapter.id})}
+                                    href={route('workbook', { workbook: workbook.id, chapter: previous_chapter.id })}
                                     className="text-blue-500 hover:text-blue-700">
-                                        &lt; Back: { previous_chapter.title }
+                                    &lt; Back: {previous_chapter.title}
                                 </Link>
                             )}
                         </div>
-                        <div class="basis-0 flex-grow text-right">
+                        <div className="basis-0 flex-grow text-right">
                             {next_chapter && (
                                 <Link
-                                    href={route('workbook', {workbook: workbook.id, chapter: next_chapter.id})}
+                                    href={route('workbook', { workbook: workbook.id, chapter: next_chapter.id })}
                                     className="text-blue-500 hover:text-blue-700">
-                                        Next: { next_chapter.title } &gt;
+                                    Next: {next_chapter.title} &gt;
                                 </Link>
                             )}
                         </div>
@@ -96,7 +96,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                     <div className="h-full flex flex-col">
                         <iframe
                             ref={previewPane}
-                            frameborder="0"
+                            frameBorder="0"
                             className='w-full flex-grow'
                         />
                         <div className="h-24 w-full grow flex flex-col">

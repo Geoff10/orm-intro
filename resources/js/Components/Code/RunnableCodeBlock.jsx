@@ -25,7 +25,7 @@ export default function RunnableCodeBlock({ className = '', title, text, preview
                     className='rounded-b-none'
                 />
             </div>
-            <div class="flex flex-row-reverse">
+            <div className="flex flex-row-reverse">
                 <button
                     className={classes.join(' ') + className}
                     onClick={previewCallback}
