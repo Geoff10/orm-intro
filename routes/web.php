@@ -19,7 +19,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::redirect('/', '/wb/eloquentSelectData/selectDataById');
+Route::redirect('/', '/wb/eloquentSelectData/selectData');
 
 Route::get('workbook/selecting-data', SelectDataController::class);
 Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook');
