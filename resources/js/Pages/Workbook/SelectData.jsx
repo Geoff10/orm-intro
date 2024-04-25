@@ -1,5 +1,6 @@
 import WorkbookLayout from '@/Layouts/WorkbookLayout';
 import RunnableCodeBlock from '@/Components/Code/RunnableCodeBlock';
+import Inspector from '@/Components/Inspector/Inspector';
 import { Head, Link } from '@inertiajs/react';
 import { useState, useRef } from 'react';
 import { CodeBlock, dracula } from "react-code-blocks";
@@ -35,7 +36,6 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
 
             <div className="flex justify-between h-full w-full gap-x-3">
                 <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
-                    {console.log(chapter.content)}
                     {chapter.content.map((item, index) => {
                         switch (item.type) {
                             case 'h1':
@@ -99,32 +99,8 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                             frameBorder="0"
                             className='w-full flex-grow'
                         />
-                        <div className="h-24 w-full grow flex flex-col">
-                            <div className='border-t border-b border-gray-500 py-2'>
-                                Queries Executed: {queryLog.length}
-                            </div>
-                            <div className='grow overflow-y-auto'>
-                                <table className='w-full text-lg mb-4'>
-                                    <thead>
-                                        <tr className='text-left'>
-                                            <th>Query</th>
-                                            {/* <th>Bindings</th> */}
-                                            <th>Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {queryLog.map((query, index) => (
-                                            <tr key={index} className={index % 2 == 0 ? 'bg-slate-200' : ''}>
-                                                <td className='py-1'>{query.sql}</td>
-                                                {/* <td className='py-1'>{query.query}</td>
-                                                <td>{query.bindings ? JSON.stringify(query.bindings) : ''}</td> */}
-                                                <td>{query.time}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+
+                        <Inspector queryLog={queryLog} />
                     </div>
                 </div>
             </div>
