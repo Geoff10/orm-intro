@@ -12,7 +12,9 @@ export default function Inspector({ queryLog }) {
     return (
         <div className="h-24 w-full grow flex flex-col" style={InspectorStyling}>
             <nav className="border-b border-gray-500 dark:border-gray-700">
-                <Tab title='Queries' active={currentTab === 'query'} onClick={() => setTab('query')} />
+                <Tab title={`Queries (${queryLog.length})`}
+                    active={currentTab === 'query'}
+                    onClick={() => setTab('query')} />
             </nav>
 
             {currentTab === 'query' && <DatabaseQueries queryLog={queryLog} />}
