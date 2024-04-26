@@ -5,7 +5,7 @@ export default function DatabaseQueries({ queryLog }) {
     const [showTime, setShowTime] = useState(false);
 
     return (
-        <div>
+        <div className="grow flex flex-col">
             <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
                 <div className="pr-2">
                     Display:
@@ -19,8 +19,8 @@ export default function DatabaseQueries({ queryLog }) {
                     <label htmlFor="showTime" className='ml-2'>Time</label>
                 </div>
             </div>
-            <div className='grow overflow-y-auto'>
-                <table className='w-full text-lg mb-4'>
+            <div className='grow basis-0 overflow-y-auto'>
+                <table className='w-full text-lg'>
                     <thead>
                         <tr className='text-left'>
                             <th>Query</th>
