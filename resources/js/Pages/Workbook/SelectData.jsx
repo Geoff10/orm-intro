@@ -35,7 +35,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
             <Head title={chapter.title} />
 
             <div className="flex justify-between h-full w-full gap-x-3">
-                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg flex-grow basis-0 p-4">
+                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg grow basis-0 p-4">
                     {chapter.content.map((item, index) => {
                         switch (item.type) {
                             case 'h1':
@@ -89,19 +89,16 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow basis-0">
+                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg grow basis-0 flex flex-col">
                     <div className="border-b-2 border-gray-300 text-2xl font-bold py-2 px-4">
                         {previewDisplayTitle}
                     </div>
-                    <div className="h-full flex flex-col">
-                        <iframe
-                            ref={previewPane}
-                            frameBorder="0"
-                            className='w-full flex-grow'
-                        />
-
-                        <Inspector queryLog={queryLog} />
-                    </div>
+                    <iframe
+                        ref={previewPane}
+                        frameBorder="0"
+                        className='w-full grow'
+                    />
+                    <Inspector queryLog={queryLog} />
                 </div>
             </div>
         </WorkbookLayout>

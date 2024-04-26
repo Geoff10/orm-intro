@@ -2,23 +2,30 @@ import { useState } from "react";
 
 export default function DatabaseQueries({ queryLog }) {
     const [showBindings, setShowBindings] = useState(false);
+    const [showTime, setShowTime] = useState(false);
 
     return (
-        <div>
-            <div className='border-t border-b border-gray-500 py-2 flex justify-between'>
-                Queries Executed: {queryLog.length}
-                {/* <span>
+        <div className="grow flex flex-col">
+            <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
+                <div className="mr-3">
+                    Display:
+                </div>
+                <div className="mr-3">
                     <input type="checkbox" id="showBindings" name="showBindings" checked={showBindings} onChange={() => setShowBindings(!showBindings)} />
-                    <label htmlFor="showBindings" className='ml-2'>Show Bindings</label>
-                </span> */}
+                    <label htmlFor="showBindings" className='ml-2'>Bindings</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="showTime" name="showTime" checked={showTime} onChange={() => setShowTime(!showTime)} />
+                    <label htmlFor="showTime" className='ml-2'>Time</label>
+                </div>
             </div>
-            <div className='grow overflow-y-auto'>
-                <table className='w-full text-lg mb-4'>
+            <div className='grow basis-0 overflow-y-auto'>
+                <table className='w-full text-lg'>
                     <thead>
                         <tr className='text-left'>
                             <th>Query</th>
                             {showBindings && <th>Bindings</th>}
-                            <th>Time</th>
+                            {showTime && <th>Time</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +37,7 @@ export default function DatabaseQueries({ queryLog }) {
                                         <pre>{query.bindings ? JSON.stringify(query.bindings, null, 2) : ''}</pre>
                                     </td>
                                 )}
-                                <td>{query.time}</td>
+                                {showTime && <td>{query.time}</td>}
                             </tr>
                         ))}
                     </tbody>
