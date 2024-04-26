@@ -7,17 +7,17 @@ export default function Workbook({ title, children }) {
                 <div className="mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="space-x-8 sm:-my-px sm:ml-10 flex text-xl">
-                            { title ?? 'Workbook'}
+                            {title ?? 'Workbook'}
                         </div>
                         <div className="flex">
                             <div className="space-x-8 sm:-my-px sm:ml-10 flex">
-                                <NavLink href={route('workbook', {workbook: 'eloquentSelectData', chapter: 'selectData'})}>
+                                <NavLink href={route('workbook', { workbook: 'eloquentSelectData', chapter: 'selectData' })}>
                                     Selects
                                 </NavLink>
-                                <NavLink href={route('workbook', {workbook: 'eloquentSelectData', chapter: 'insertingData'})}>
+                                <NavLink href={route('workbook', { workbook: 'eloquentSelectData', chapter: 'insertingData' })}>
                                     Inserts
                                 </NavLink>
-                                <NavLink href={route('workbook', {workbook: 'eloquentSelectData', chapter: 'queryingRelatedData'})}>
+                                <NavLink href={route('workbook', { workbook: 'eloquentSelectData', chapter: 'queryingRelatedData' })}>
                                     Relationships
                                 </NavLink>
                             </div>
