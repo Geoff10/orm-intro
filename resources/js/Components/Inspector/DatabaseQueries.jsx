@@ -7,10 +7,10 @@ export default function DatabaseQueries({ queryLog }) {
     return (
         <div className="grow flex flex-col">
             <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
-                <div className="pr-2">
+                <div className="mr-3">
                     Display:
                 </div>
-                <div className="pr-2">
+                <div className="mr-3">
                     <input type="checkbox" id="showBindings" name="showBindings" checked={showBindings} onChange={() => setShowBindings(!showBindings)} />
                     <label htmlFor="showBindings" className='ml-2'>Bindings</label>
                 </div>
