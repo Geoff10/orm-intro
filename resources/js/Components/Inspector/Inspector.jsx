@@ -10,7 +10,7 @@ export default function Inspector({ queryLog }) {
     };
 
     return (
-        <div className="h-24 w-full grow flex flex-col" style={InspectorStyling}>
+        <div className=" h-96 w-full flex flex-col" style={InspectorStyling}>
             <nav className="border-b border-gray-500 dark:border-gray-700">
                 <Tab title={`Queries (${queryLog.length})`}
                     active={currentTab === 'query'}
