@@ -40,7 +40,7 @@ export default function Inspector({ queryLog }) {
                 </div>
             </div>
 
-            <div style={{ height: `${height}rem` }}>
+            <div className="flex" style={{ height: `${height}rem` }}>
                 {currentTab === 'query' && <DatabaseQueries queryLog={queryLog} />}
             </div>
         </div>
