@@ -32,10 +32,10 @@ export default function Inspector({ queryLog }) {
                 </nav>
                 <div>
                     <button onClick={() => decreaseInspectorHeight()}>
-                        <span class="material-symbols-rounded">remove</span>
+                        <span className="material-symbols-rounded">remove</span>
                     </button>
                     <button onClick={() => increaseInspectorHeight()}>
-                        <span class="material-symbols-rounded">add</span>
+                        <span className="material-symbols-rounded">add</span>
                     </button>
                 </div>
             </div>
