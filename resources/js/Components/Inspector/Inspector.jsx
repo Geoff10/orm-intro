@@ -4,20 +4,45 @@ import Tab from "@/Components/Navigation/Tab";
 
 export default function Inspector({ queryLog }) {
     const [currentTab, setCurrentTab] = useState('query');
+    const [height, setHeight] = useState(24);
 
     const setTab = (tab) => {
         setCurrentTab(tab);
     };
 
-    return (
-        <div className=" h-96 w-full flex flex-col" style={InspectorStyling}>
-            <nav className="border-b border-gray-500 dark:border-gray-700">
-                <Tab title={`Queries (${queryLog.length})`}
-                    active={currentTab === 'query'}
-                    onClick={() => setTab('query')} />
-            </nav>
+    const increaseInspectorHeight = () => {
+        if (height < 48) {
+            setHeight(height + 24);
+        }
+    }
 
-            {currentTab === 'query' && <DatabaseQueries queryLog={queryLog} />}
+    const decreaseInspectorHeight = () => {
+        if (height > 2) {
+            setHeight(height - 24);
+        }
+    }
+
+    return (
+        <div className="w-full flex flex-col" style={InspectorStyling}>
+            <div className="flex justify-between items-center">
+                <nav className="border-b border-gray-500 dark:border-gray-700">
+                    <Tab title={`Queries (${queryLog.length})`}
+                        active={currentTab === 'query'}
+                        onClick={() => setTab('query')} />
+                </nav>
+                <div>
+                    <button onClick={() => decreaseInspectorHeight()}>
+                        <span class="material-symbols-rounded">remove</span>
+                    </button>
+                    <button onClick={() => increaseInspectorHeight()}>
+                        <span class="material-symbols-rounded">add</span>
+                    </button>
+                </div>
+            </div>
+
+            <div style={{ height: `${height}rem` }}>
+                {currentTab === 'query' && <DatabaseQueries queryLog={queryLog} />}
+            </div>
         </div>
     );
 };
