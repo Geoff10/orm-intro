@@ -12,11 +12,11 @@ export default function DatabaseQueries({ queryLog }) {
                 </div>
                 <div className="mr-3">
                     <input type="checkbox" id="showBindings" name="showBindings" checked={showBindings} onChange={() => setShowBindings(!showBindings)} />
-                    <label htmlFor="showBindings" className='ml-2'>Bindings</label>
+                    <label htmlFor="showBindings" className='ml-2 select-none'>Bindings</label>
                 </div>
                 <div>
                     <input type="checkbox" id="showTime" name="showTime" checked={showTime} onChange={() => setShowTime(!showTime)} />
-                    <label htmlFor="showTime" className='ml-2'>Time</label>
+                    <label htmlFor="showTime" className='ml-2 select-none'>Time</label>
                 </div>
             </div>
             <div className='grow basis-0 overflow-y-auto'>
