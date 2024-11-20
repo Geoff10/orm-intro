@@ -5,7 +5,7 @@ export default function DatabaseQueries({ queryLog }) {
     const [showTime, setShowTime] = useState(false);
 
     return (
-        <div className="grow flex flex-col">
+        <>
             <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
                 <div className="mr-3">
                     Display:
@@ -43,6 +43,6 @@ export default function DatabaseQueries({ queryLog }) {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </>
     )
 }
