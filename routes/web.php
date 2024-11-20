@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Workbook\SelectDataController;
 use App\Http\Controllers\Workbook\WorkbookController;
@@ -26,6 +27,9 @@ Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook
 
 Route::get('example/{module}/{exercise}', ExampleController::class)
     ->name('example');
+
+Route::get('preview/{workbook}/{chapter}/{exercise}', PreviewController::class)
+    ->name('preview');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
