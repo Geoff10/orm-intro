@@ -86,32 +86,6 @@ class ExampleController extends Controller
     {
         return [
             'sqlSelectData' => [
-                'sqlSelectAll' => function (): array {
-                    $data = DB::select('SELECT * FROM books');
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                    ];
-                },
-                'ormSelectAll' => function (): array {
-                    $data = Book::get();
-
-                    return [
-                        'properties' => [
-                            'Method' => 'Eloquent ORM',
-                        ],
-                        'table' => [
-                            'headers' => array_keys($data->first()->toArray()),
-                            'rows' => $data->toArray(),
-                        ],
-                    ];
-                },
                 'sqlSelectById' => function (): array {
                     $data = DB::select('SELECT * FROM books WHERE id = ?', [1]);
 
