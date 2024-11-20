@@ -5,18 +5,18 @@ export default function DatabaseQueries({ queryLog }) {
     const [showTime, setShowTime] = useState(false);
 
     return (
-        <div className="grow flex flex-col">
+        <>
             <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
                 <div className="mr-3">
                     Display:
                 </div>
                 <div className="mr-3">
                     <input type="checkbox" id="showBindings" name="showBindings" checked={showBindings} onChange={() => setShowBindings(!showBindings)} />
-                    <label htmlFor="showBindings" className='ml-2'>Bindings</label>
+                    <label htmlFor="showBindings" className='ml-2 select-none'>Bindings</label>
                 </div>
                 <div>
                     <input type="checkbox" id="showTime" name="showTime" checked={showTime} onChange={() => setShowTime(!showTime)} />
-                    <label htmlFor="showTime" className='ml-2'>Time</label>
+                    <label htmlFor="showTime" className='ml-2 select-none'>Time</label>
                 </div>
             </div>
             <div className='grow basis-0 overflow-y-auto'>
@@ -43,6 +43,6 @@ export default function DatabaseQueries({ queryLog }) {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </>
     )
 }
