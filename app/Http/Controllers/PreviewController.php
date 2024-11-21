@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
 use App\Workbooks\Chapter;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -13,7 +12,7 @@ class PreviewController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(string $workbook, string $chapter, int $exercise)
+    public function __invoke(Request $request, string $workbook, string $chapter, int $exercise)
     {
         DB::connection()->enableQueryLog();
 
@@ -34,7 +33,7 @@ class PreviewController extends Controller
         if ($example) {
             try {
                 $results = view('results', [
-                    'results' => $example(),
+                    'results' => $example($request->input('params', [])),
                 ])->render();
             } catch (\Throwable $th) {
                 $results = view('exception', [
