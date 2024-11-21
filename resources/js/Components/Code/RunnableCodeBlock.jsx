@@ -21,6 +21,8 @@ export default function RunnableCodeBlock({ className = '', title, text, preview
                 return { ...state, [action.id]: [...state[action.id], action.value] };
             case 'remove':
                 return { ...state, [action.id]: state[action.id].filter((option) => option !== action.value) };
+            case 'set':
+                return { ...state, [action.id]: action.value };
         }
     }
 
@@ -46,13 +48,27 @@ export default function RunnableCodeBlock({ className = '', title, text, preview
                                         <input
                                             type="checkbox"
                                             id={param.id + '-' + option}
-                                            name={param.id + '-' + option}
+                                            name={param.id}
                                             checked={options[param.id].includes(option)}
                                             onChange={(e) => updateOptions({ id: param.id, action: e.target.checked ? 'add' : 'remove', value: option })}
                                         />
                                         <label htmlFor={param.id + '-' + option} className='ml-1 mr-4'>{option}</label>
                                     </div>
                                 })}
+                            </div>;
+                        case 'select':
+                            return <div>
+                                <div>{param.label}</div>
+                                <select
+                                    id={param.id}
+                                    name={param.id}
+                                    value={options[param.id]}
+                                    onChange={(e) => updateOptions({ id: param.id, action: 'set', value: e.target.value })}
+                                >
+                                    {param.options.map((option, optionIndex) => {
+                                        return <option key={optionIndex} value={option}>{option}</option>
+                                    })}
+                                </select>
                             </div>;
                     }
                 })}
