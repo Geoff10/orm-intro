@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Workbooks\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PreviewController extends Controller
@@ -19,10 +20,13 @@ class PreviewController extends Controller
             return abort(404);
         }
 
+        Log::info("Previewing {$workbook} {$chapter} exercise {$exercise}");
+
         $content = (new $chapterClass())->getContent();
         $block = $content[$exercise] ?? null;
 
         if (!$block || $block['type'] !== 'runnableCodeBlock' || !isset($block['code'])) {
+            Log::info("There is no block, or the block is not a runnable code block, or the block does not have code.");
             return abort(404);
         }
 
@@ -76,6 +80,7 @@ class PreviewController extends Controller
             ]);
         }
 
+        Log::info("There was an error running the example.");
         return abort(404);
     }
 }
