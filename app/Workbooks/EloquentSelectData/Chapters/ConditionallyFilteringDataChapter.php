@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Workbooks\EloquentSelectData\Chapters;
 
+use App\Models\Book;
 use App\Workbooks\Chapter;
+use Illuminate\Support\Facades\DB;
 
 class ConditionallyFilteringDataChapter extends Chapter
 {
@@ -20,6 +22,11 @@ class ConditionallyFilteringDataChapter extends Chapter
 
     public function content(): array
     {
+        $selectableGenres = array_merge(
+            [''],
+            Book::pluck('genre')->unique()->values()->toArray()
+        );
+
         return [
             [
                 "type" => "h2",
@@ -34,7 +41,7 @@ class ConditionallyFilteringDataChapter extends Chapter
             [
                 "type" => "codeBlock",
                 "text" => "\$filters = [
-    'release_date' => '2020-01-01',
+    'release_date' => '1955-01-01',
     'genre' => 'Fantasy',
 ]",
             ],
@@ -45,6 +52,15 @@ class ConditionallyFilteringDataChapter extends Chapter
             [
                 "type" => "runnableCodeBlock",
                 "title" => "SQL: Filter Data",
+                "params" => [
+                    [
+                        "type" => "select",
+                        "label" => "Select the genre of book to filter by.",
+                        "id" => "genre",
+                        "options" => $selectableGenres,
+                        "default" => 'Fantasy',
+                    ],
+                ],
                 "text" => [
                     "\$parameters = [];",
                     "\$sql = 'SELECT * FROM books WHERE'",
@@ -67,7 +83,51 @@ class ConditionallyFilteringDataChapter extends Chapter
                     '',
                     'return $query->fetchAll();',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlFilterDataConditional']),
+                "code" => function () use ($selectableGenres): array {
+                    if (count(func_get_args()) === 0) {
+                        return [];
+                    }
+
+                    $filters = [
+                        'release_date' => '1955-01-01',
+                    ];
+
+                    $params = func_get_args()[0] ?? [];
+
+                    $genre = $params['genre'];
+                    if (in_array($genre, $selectableGenres) && $genre !== '') {
+                        $filters['genre'] = $genre;
+                    }
+
+                    $parameters = [];
+                    $sql = 'SELECT * FROM books WHERE';
+
+                    if (isset($filters['release_date'])) {
+                        $sql .= ' release_date < :release_date AND';
+                        $parameters['release_date'] = $filters['release_date'];
+                    }
+
+                    if (isset($filters['genre'])) {
+                        $sql .= ' genre = :genre AND';
+                        $parameters['genre'] = $filters['genre'];
+                    }
+
+                    $sql = rtrim($sql, ' AND');
+
+                    $data = DB::select($sql, $parameters);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                        'sql' => $sql,
+                        'parameters' => $parameters,
+                    ];
+                },
             ],
             [
                 "type" => "h3",
@@ -76,6 +136,15 @@ class ConditionallyFilteringDataChapter extends Chapter
             [
                 "type" => "runnableCodeBlock",
                 "title" => "ORM: Filter Data",
+                "params" => [
+                    [
+                        "type" => "select",
+                        "label" => "Select the genre of book to filter by.",
+                        "id" => "ormGenre",
+                        "options" => $selectableGenres,
+                        "default" => 'Fantasy',
+                    ],
+                ],
                 "text" => [
                     '$query = Book::query();',
                     'if (isset($filters[\'release_date\'])) {',
@@ -86,7 +155,46 @@ class ConditionallyFilteringDataChapter extends Chapter
                     '}',
                     'return $query->get();',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormFilterDataConditional']),
+                "code" => function () use ($selectableGenres): array {
+                    if (count(func_get_args()) === 0) {
+                        return [];
+                    }
+
+                    $filters = [
+                        'release_date' => '1955-01-01',
+                    ];
+
+                    $params = func_get_args()[0] ?? [];
+
+                    $genre = $params['ormGenre'];
+                    if (in_array($genre, $selectableGenres) && $genre !== '') {
+                        $filters['genre'] = $genre;
+                    }
+
+                    $query = Book::query();
+
+                    if (isset($filters['release_date'])) {
+                        $query->where('release_date', '<', $filters['release_date']);
+                    }
+
+                    if (isset($filters['genre'])) {
+                        $query->where('genre', $filters['genre']);
+                    }
+
+                    $data = $query->get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                        'sql' => $query->toSql(),
+                        'parameters' => $query->getBindings(),
+                    ];
+                },
             ],
         ];
     }

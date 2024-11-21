@@ -85,6 +85,7 @@ class ExampleController extends Controller
     private function modules(): array
     {
         return [
+            'sqlSelectData' => [
                 'sqlSelectChooseColumns' => function (): array {
                     $data = DB::select('SELECT title, genre, release_date FROM books');
 
@@ -109,70 +110,6 @@ class ExampleController extends Controller
                             'headers' => array_keys($data->first()->toArray()),
                             'rows' => $data->toArray(),
                         ],
-                    ];
-                },
-                'sqlFilterData' => function (): array {
-                    $data = DB::select('SELECT * FROM books WHERE release_date < ? AND genre = ?', [
-                        '1955-01-01',
-                        'Fantasy'
-                    ]);
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                    ];
-                },
-                'ormFilterData' => function (): array {
-                    $data = Book::where('release_date', '<', '1955-01-01')->where('genre', 'Fantasy')->get();
-
-                    return [
-                        'properties' => [
-                            'Method' => 'Eloquent ORM',
-                        ],
-                        'table' => [
-                            'headers' => array_keys($data->first()->toArray()),
-                            'rows' => $data->toArray(),
-                        ],
-                    ];
-                },
-                'sqlFilterDataConditional' => function (): array {
-                    $filters = [
-                        'release_date' => '1955-01-01',
-                        'genre' => 'Fantasy',
-                    ];
-
-                    $parameters = [];
-                    $sql = 'SELECT * FROM books WHERE';
-
-                    if (isset($filters['release_date'])) {
-                        $sql .= ' release_date < :release_date AND';
-                        $parameters['release_date'] = $filters['release_date'];
-                    }
-
-                    if (isset($filters['genre'])) {
-                        $sql .= ' genre = :genre AND';
-                        $parameters['genre'] = $filters['genre'];
-                    }
-
-                    $sql = rtrim($sql, ' AND');
-
-                    $data = DB::select($sql, $parameters);
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                        'sql' => $sql,
-                        'parameters' => $parameters,
                     ];
                 },
                 'ormFilterDataConditional' => function (): array {
@@ -233,32 +170,6 @@ class ExampleController extends Controller
                 },
                 'ormSortData' => function (): array {
                     $data = Book::orderBy('release_date')->get();
-
-                    return [
-                        'properties' => [
-                            'Method' => 'Eloquent ORM',
-                        ],
-                        'table' => [
-                            'headers' => array_keys($data->first()->toArray()),
-                            'rows' => $data->toArray(),
-                        ],
-                    ];
-                },
-                'sqlSortDataDescending' => function (): array {
-                    $data = DB::select('SELECT * FROM books ORDER BY release_date DESC');
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                    ];
-                },
-                'ormSortDataDescending' => function (): array {
-                    $data = Book::orderBy('release_date', 'desc')->get();
 
                     return [
                         'properties' => [

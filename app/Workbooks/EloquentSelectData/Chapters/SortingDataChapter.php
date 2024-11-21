@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Workbooks\EloquentSelectData\Chapters;
 
+use App\Models\Book;
 use App\Workbooks\Chapter;
+use Illuminate\Support\Facades\DB;
 
 class SortingDataChapter extends Chapter
 {
@@ -20,6 +22,8 @@ class SortingDataChapter extends Chapter
 
     public function content(): array
     {
+        $selectableOrders = ['ASC', 'DESC'];
+
         return [
             [
                 "type" => "h2",
@@ -76,6 +80,15 @@ class SortingDataChapter extends Chapter
             [
                 "type" => "runnableCodeBlock",
                 "title" => "SQL",
+                "params" => [
+                    [
+                        "type" => "select",
+                        "label" => "Choose the sort order.",
+                        "id" => "order",
+                        "options" => $selectableOrders,
+                        "default" => 'DESC',
+                    ],
+                ],
                 "text" => [
                     "\$query = \$this->db->prepare('SELECT * FROM books ORDER BY release_date DESC;');",
                     '$query->setFetchMode(PDO::FETCH_ASSOC);',
@@ -83,7 +96,26 @@ class SortingDataChapter extends Chapter
                     '',
                     'return $query->fetchAll();',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlSortDataDescending']),
+                "code" => function () use ($selectableOrders): array {
+                    $params = func_get_args()[0] ?? [];
+
+                    $order = $params['order'] ?? null;
+                    if (!in_array($order, $selectableOrders)) {
+                        $order = 'DESC';
+                    }
+
+                    $data = DB::select('SELECT * FROM books ORDER BY release_date ' . $order);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
             ],
             [
                 "type" => "h3",
@@ -92,10 +124,38 @@ class SortingDataChapter extends Chapter
             [
                 "type" => "runnableCodeBlock",
                 "title" => "ORM",
+                "params" => [
+                    [
+                        "type" => "select",
+                        "label" => "Choose the sort order.",
+                        "id" => "ormOrder",
+                        "options" => $selectableOrders,
+                        "default" => 'DESC',
+                    ],
+                ],
                 "text" => [
                     'return Book::orderBy("release_date", "desc")->get();',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSortDataDescending']),
+                "code" => function () use ($selectableOrders): array {
+                    $params = func_get_args()[0] ?? [];
+
+                    $order = $params['ormOrder'] ?? null;
+                    if (!in_array($order, $selectableOrders)) {
+                        $order = 'DESC';
+                    }
+
+                    $data = Book::orderBy('release_date', $order)->get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                }
             ]
         ];
     }

@@ -39,6 +39,7 @@ export default function RunnableCodeBlock({ className = '', title, text, preview
         <div className="border border-gray-400 rounded">
             <div>
                 {params && params.map((param) => {
+                    const optionId = Math.random().toString(36).substring(2, 15);
                     switch (param.type) {
                         case 'checkbox':
                             return <div>
@@ -58,9 +59,9 @@ export default function RunnableCodeBlock({ className = '', title, text, preview
                             </div>;
                         case 'select':
                             return <div>
-                                <div>{param.label}</div>
+                                <label className="block" for={param.id + '-' + optionId}>{param.label}</label>
                                 <select
-                                    id={param.id}
+                                    id={param.id + '-' + optionId}
                                     name={param.id}
                                     value={options[param.id]}
                                     onChange={(e) => updateOptions({ id: param.id, action: 'set', value: e.target.value })}
