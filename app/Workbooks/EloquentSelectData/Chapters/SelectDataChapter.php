@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Workbooks\EloquentSelectData\Chapters;
 
+use App\Models\Book;
 use App\Workbooks\Chapter;
+use Illuminate\Support\Facades\DB;
 
 class SelectDataChapter extends Chapter
 {
@@ -43,7 +45,19 @@ class SelectDataChapter extends Chapter
                     '',
                     'return $query->fetchAll();',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlSelectAll']),
+                'code' => function (): array {
+                    $data = DB::select('SELECT * FROM books');
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys((array) $data[0]),
+                            'rows' => $data,
+                        ],
+                    ];
+                },
             ],
             [
                 "type" => "h3",
@@ -59,7 +73,20 @@ class SelectDataChapter extends Chapter
                 "text" => [
                     'return Book::get();',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectAll']),
+                "code" => function (): array {
+                    $data = Book::get();
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->first()->toArray()),
+                            'rows' => $data->toArray(),
+                        ],
+                    ];
+                },
+                // "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectAll']),
             ],
         ];
     }

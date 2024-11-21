@@ -12,8 +12,8 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
     const [previewDisplayTitle, setPreviewDisplayTitle] = useState('');
     const [queryLog, setQueryLog] = useState([]);
 
-    const loadPreviewDisplay = (url, title) => {
-        axios.get(url)
+    const loadPreviewDisplay = (url, title, options) => {
+        axios.get(url, { params: options })
             .then((response) => response.data)
             .then((data) => {
                 previewPane.current.contentWindow.document.open();
@@ -50,8 +50,8 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                                 return <RunnableCodeBlock
                                     key={index}
                                     text={item.text.join("\n")}
-                                    previewCallback={() => loadPreviewDisplay(item.route, item.title)}
-                                />
+                                    params={item.params}
+                                    previewCallback={(options) => loadPreviewDisplay(item.route, item.title, options)} />
                             case 'codeBlock':
                                 return <div className="font-mono" key={index}>
                                     <CodeBlock
