@@ -81,6 +81,6 @@ class PreviewController extends Controller
         }
 
         Log::info("There was an error running the example.");
-        return abort(404);
+        return abort(418);
     }
 }
