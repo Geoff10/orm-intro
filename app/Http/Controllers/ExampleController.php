@@ -181,32 +181,6 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
-                'sqlSortDataDescending' => function (): array {
-                    $data = DB::select('SELECT * FROM books ORDER BY release_date DESC');
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                    ];
-                },
-                'ormSortDataDescending' => function (): array {
-                    $data = Book::orderBy('release_date', 'desc')->get();
-
-                    return [
-                        'properties' => [
-                            'Method' => 'Eloquent ORM',
-                        ],
-                        'table' => [
-                            'headers' => array_keys($data->first()->toArray()),
-                            'rows' => $data->toArray(),
-                        ],
-                    ];
-                },
                 'sqlInsertData' => function (): array {
                     DB::beginTransaction();
 
