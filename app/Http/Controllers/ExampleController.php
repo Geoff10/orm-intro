@@ -85,6 +85,7 @@ class ExampleController extends Controller
     private function modules(): array
     {
         return [
+            'sqlSelectData' => [
                 'sqlSelectChooseColumns' => function (): array {
                     $data = DB::select('SELECT title, genre, release_date FROM books');
 
@@ -100,35 +101,6 @@ class ExampleController extends Controller
                 },
                 'ormSelectChooseColumns' => function (): array {
                     $data = Book::select('title', 'genre', 'release_date')->get();
-
-                    return [
-                        'properties' => [
-                            'Method' => 'Eloquent ORM',
-                        ],
-                        'table' => [
-                            'headers' => array_keys($data->first()->toArray()),
-                            'rows' => $data->toArray(),
-                        ],
-                    ];
-                },
-                'sqlFilterData' => function (): array {
-                    $data = DB::select('SELECT * FROM books WHERE release_date < ? AND genre = ?', [
-                        '1955-01-01',
-                        'Fantasy'
-                    ]);
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                    ];
-                },
-                'ormFilterData' => function (): array {
-                    $data = Book::where('release_date', '<', '1955-01-01')->where('genre', 'Fantasy')->get();
 
                     return [
                         'properties' => [
