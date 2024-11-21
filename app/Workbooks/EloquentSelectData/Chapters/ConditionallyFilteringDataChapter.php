@@ -116,6 +116,14 @@ class ConditionallyFilteringDataChapter extends Chapter
 
                     $data = DB::select($sql, $parameters);
 
+                    if (empty($data)) {
+                        $data = [
+                            [
+                                'Results' => 'No results found',
+                            ]
+                        ];
+                    }
+
                     return [
                         'properties' => [
                             'Method' => 'SQL',
@@ -182,6 +190,14 @@ class ConditionallyFilteringDataChapter extends Chapter
                     }
 
                     $data = $query->get();
+
+                    if (empty($data)) {
+                        $data = [
+                            [
+                                'Results' => 'No results found',
+                            ]
+                        ];
+                    }
 
                     return [
                         'properties' => [

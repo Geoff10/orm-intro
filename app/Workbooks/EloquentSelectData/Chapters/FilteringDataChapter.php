@@ -125,6 +125,14 @@ class FilteringDataChapter extends Chapter
 
                     $data = Book::where('release_date', '<', '1955-01-01')->where('genre', $genre)->get();
 
+                    if (empty($data)) {
+                        $data = [
+                            [
+                                'Results' => 'No results found',
+                            ]
+                        ];
+                    }
+
                     return [
                         'properties' => [
                             'Method' => 'Eloquent ORM',
