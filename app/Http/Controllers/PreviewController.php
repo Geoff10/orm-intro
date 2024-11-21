@@ -15,6 +15,7 @@ class PreviewController extends Controller
      */
     public function __invoke(Request $request, string $workbook, string $chapter, int $exercise)
     {
+        $chapter = ucfirst($chapter);
         $chapterClass = "App\\Workbooks\\{$workbook}\\Chapters\\{$chapter}Chapter";
         if (!is_subclass_of($chapterClass, Chapter::class)) {
             return abort(418);
