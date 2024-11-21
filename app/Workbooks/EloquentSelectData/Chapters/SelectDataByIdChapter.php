@@ -6,6 +6,7 @@ namespace App\Workbooks\EloquentSelectData\Chapters;
 
 use App\Models\Book;
 use App\Workbooks\Chapter;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class SelectDataByIdChapter extends Chapter
@@ -160,7 +161,28 @@ class SelectDataByIdChapter extends Chapter
                     '',
                     'return $result;',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'sqlSelectByIdOrFail']),
+                "code" => function (): array {
+                    $params = func_get_args();
+                    if (count($params) === 0) {
+                        return [];
+                    }
+
+                    $result = DB::select('SELECT * FROM books WHERE id = ?', [-1]);
+
+                    if (!$result) {
+                        throw new ModelNotFoundException('Id not found');
+                    }
+
+                    return [
+                        'properties' => [
+                            'Method' => 'SQL',
+                        ],
+                        'table' => [
+                            'headers' => array_keys([]),
+                            'rows' => [],
+                        ],
+                    ];
+                },
             ],
             [
                 "type" => "h3",
@@ -176,7 +198,25 @@ class SelectDataByIdChapter extends Chapter
                 "text" => [
                     'return Book::findOrFail(-1);',
                 ],
-                "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectByIdOrFail']),
+                "code" => function (): array {
+                    $params = func_get_args();
+                    if (count($params) === 0) {
+                        return [];
+                    }
+
+                    $data = Book::findOrFail(-1);
+
+                    return [
+                        'properties' => [
+                            'Method' => 'Eloquent ORM',
+                        ],
+                        'table' => [
+                            'headers' => array_keys($data->toArray()),
+                            'rows' => [$data->toArray()],
+                        ],
+                    ];
+                },
+                // "route" => route('example', ['module' => 'sqlSelectData', 'exercise' => 'ormSelectByIdOrFail']),
             ],
         ];
     }
