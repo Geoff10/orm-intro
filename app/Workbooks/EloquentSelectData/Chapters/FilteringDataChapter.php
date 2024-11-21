@@ -125,11 +125,17 @@ class FilteringDataChapter extends Chapter
 
                     $data = Book::where('release_date', '<', '1955-01-01')->where('genre', $genre)->get();
 
-                    if (empty($data)) {
+                    if ($data->isEmpty()) {
                         $data = collect([
-                            [
-                                'Results' => 'No results found',
-                            ]
+                            new class() {
+                                public $results = 'No results found';
+                                public function toArray()
+                                {
+                                    return [
+                                        'Results' => $this->results,
+                                    ];
+                                }
+                            }
                         ]);
                     }
 
