@@ -112,41 +112,6 @@ class ExampleController extends Controller
                         ],
                     ];
                 },
-                'sqlFilterDataConditional' => function (): array {
-                    $filters = [
-                        'release_date' => '1955-01-01',
-                        'genre' => 'Fantasy',
-                    ];
-
-                    $parameters = [];
-                    $sql = 'SELECT * FROM books WHERE';
-
-                    if (isset($filters['release_date'])) {
-                        $sql .= ' release_date < :release_date AND';
-                        $parameters['release_date'] = $filters['release_date'];
-                    }
-
-                    if (isset($filters['genre'])) {
-                        $sql .= ' genre = :genre AND';
-                        $parameters['genre'] = $filters['genre'];
-                    }
-
-                    $sql = rtrim($sql, ' AND');
-
-                    $data = DB::select($sql, $parameters);
-
-                    return [
-                        'properties' => [
-                            'Method' => 'SQL',
-                        ],
-                        'table' => [
-                            'headers' => array_keys((array) $data[0]),
-                            'rows' => $data,
-                        ],
-                        'sql' => $sql,
-                        'parameters' => $parameters,
-                    ];
-                },
                 'ormFilterDataConditional' => function (): array {
                     $filters = [
                         'release_date' => '1955-01-01',
