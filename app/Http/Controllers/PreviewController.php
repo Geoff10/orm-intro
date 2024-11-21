@@ -14,8 +14,6 @@ class PreviewController extends Controller
      */
     public function __invoke(Request $request, string $workbook, string $chapter, int $exercise)
     {
-        DB::connection()->enableQueryLog();
-
         $chapterClass = "App\\Workbooks\\{$workbook}\\Chapters\\{$chapter}Chapter";
         if (!is_subclass_of($chapterClass, Chapter::class)) {
             return abort(404);
@@ -27,6 +25,8 @@ class PreviewController extends Controller
         if (!$block || $block['type'] !== 'runnableCodeBlock' || !isset($block['code'])) {
             return abort(404);
         }
+
+        DB::connection()->enableQueryLog();
 
         $example = $block['code'];
 
