@@ -192,11 +192,11 @@ class ConditionallyFilteringDataChapter extends Chapter
                     $data = $query->get();
 
                     if (empty($data)) {
-                        $data = [
+                        $data = collect([
                             [
                                 'Results' => 'No results found',
                             ]
-                        ];
+                        ]);
                     }
 
                     return [
