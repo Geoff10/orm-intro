@@ -27,7 +27,7 @@ class PreviewController extends Controller
 
         if (!$block || $block['type'] !== 'runnableCodeBlock' || !isset($block['code'])) {
             Log::error("There is no block, or the block is not a runnable code block, or the block does not have code.");
-            return abort(404);
+            return abort(418);
         }
 
         DB::connection()->enableQueryLog();
@@ -81,6 +81,6 @@ class PreviewController extends Controller
         }
 
         Log::error("There was an error running the example.");
-        return abort(418);
+        return abort(404);
     }
 }
