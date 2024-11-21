@@ -20,13 +20,13 @@ class PreviewController extends Controller
             return abort(404);
         }
 
-        Log::info("Previewing {$workbook} {$chapter} exercise {$exercise}");
+        Log::error("Previewing {$workbook} {$chapter} exercise {$exercise}");
 
         $content = (new $chapterClass())->getContent();
         $block = $content[$exercise] ?? null;
 
         if (!$block || $block['type'] !== 'runnableCodeBlock' || !isset($block['code'])) {
-            Log::info("There is no block, or the block is not a runnable code block, or the block does not have code.");
+            Log::error("There is no block, or the block is not a runnable code block, or the block does not have code.");
             return abort(404);
         }
 
@@ -80,7 +80,7 @@ class PreviewController extends Controller
             ]);
         }
 
-        Log::info("There was an error running the example.");
+        Log::error("There was an error running the example.");
         return abort(418);
     }
 }
