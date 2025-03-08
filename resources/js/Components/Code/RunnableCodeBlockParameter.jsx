@@ -19,7 +19,7 @@ export default function RunnableCodeBlockParameter({ param, options, updateOptio
             </div>;
         case 'select':
             return <div key={param.id} className={param.id}>
-                <label className="block" for={param.id + '-' + optionId}>{param.label}</label>
+                <label className="block" htmlFor={param.id + '-' + optionId}>{param.label}</label>
                 <select
                     id={param.id + '-' + optionId}
                     name={param.id}
