@@ -40,7 +40,7 @@ class WorkbookController extends Controller
 
             // TODO: Make this use something more generic than the workbook ID. Eg. a type property on the workbook
             return match ($workbook->id()) {
-                'eloquentSelectData' => Inertia::render('Workbook/SelectData', $props),
+                'eloquentSelectData' => Inertia::render('WorkbookTypes/DatabaseQueries', $props),
                 default => abort(404),
             };
         }
