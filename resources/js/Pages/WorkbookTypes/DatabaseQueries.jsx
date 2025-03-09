@@ -1,9 +1,8 @@
 import WorkbookLayout from '@/Layouts/WorkbookLayout';
-import RunnableCodeBlock from '@/Components/Code/RunnableCodeBlock';
+import ContentRenderer from '@/Components/WorkbookContent/ContentRenderer';
 import Inspector from '@/Components/Inspector/Inspector';
 import { Head, Link } from '@inertiajs/react';
 import { useState, useRef } from 'react';
-import { CodeBlock, dracula } from "react-code-blocks";
 import axios from 'axios';
 
 export default function SelectData({ workbook, chapter, previous_chapter, next_chapter }) {
@@ -36,37 +35,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
 
             <div className="flex justify-between h-full w-full gap-x-3">
                 <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg grow basis-0 p-4">
-                    {chapter.content.map((item, index) => {
-                        switch (item.type) {
-                            case 'h1':
-                                return <h1 key={index} className='text-3xl my-2'>{item.content}</h1>
-                            case 'h2':
-                                return <h2 key={index} className='text-2xl my-2'>{item.content}</h2>
-                            case 'h3':
-                                return <h3 key={index} className='font-bold text-lg my-2'>{item.content}</h3>
-                            case 'p':
-                                return <p key={index} className='my-2'>{item.content}</p>
-                            case 'runnableCodeBlock':
-                                return <RunnableCodeBlock
-                                    key={index}
-                                    text={item.text.join("\n")}
-                                    params={item.params}
-                                    previewCallback={(options) => loadPreviewDisplay(item.route, item.title, options)} />
-                            case 'codeBlock':
-                                return <div className="font-mono" key={index}>
-                                    <CodeBlock
-                                        language='php'
-                                        showLineNumbers
-                                        theme={dracula}
-                                        wrapLines
-                                        text={item.text}
-                                        className='rounded-b-none'
-                                    />
-                                </div>
-                            default:
-                                return <p key={index} className='my-2'>{item.content}</p>
-                        }
-                    })}
+                    <ContentRenderer content={chapter.content} loadPreviewDisplay={loadPreviewDisplay} />
                     <div className="flex justify-between border-t border-gray-300 mt-2">
                         <div className="basis-0 flex-grow text-left">
                             {previous_chapter && (
