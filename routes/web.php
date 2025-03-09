@@ -4,6 +4,7 @@ use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Workbook\WorkbookController;
+use App\Http\Middleware\EnsureSessionHasUniqueId;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,15 +19,17 @@ use Inertia\Inertia;
 |
 */
 
-Route::redirect('/', '/wb/eloquentSelectData/selectData');
+Route::middleware(EnsureSessionHasUniqueId::class)->group(function () {
+    Route::redirect('/', '/wb/eloquentSelectData/selectData');
 
-Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook');
+    Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook');
 
-Route::get('example/{module}/{exercise}', ExampleController::class)
-    ->name('example');
+    Route::get('example/{module}/{exercise}', ExampleController::class)
+        ->name('example');
 
-Route::get('preview/{workbook}/{chapter}/{exercise}', PreviewController::class)
-    ->name('preview');
+    Route::get('preview/{workbook}/{chapter}/{exercise}', PreviewController::class)
+        ->name('preview');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
