@@ -32,6 +32,7 @@ class WorkbookController extends Controller
             }
 
             $props = [
+                'uniqueSessionId' => session()->get('session_identifier'),
                 'workbook' => $workbook->toArray(),
                 'chapter' => $chapter->toArray(),
                 'next_chapter' => $workbook->getNextChapter($chapter->id())?->toArray(['id', 'title']),
