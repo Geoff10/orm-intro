@@ -2,7 +2,7 @@ import { useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
 import Tab from "@/Components/Navigation/Tab";
 
-export default function Inspector({ queryLog }) {
+export default function Inspector({ queryLog = null }) {
     const [currentTab, setCurrentTab] = useState('query');
     const [height, setHeight] = useState(24);
 
@@ -26,9 +26,9 @@ export default function Inspector({ queryLog }) {
         <div className="w-full flex flex-col" style={InspectorStyling}>
             <div className="flex justify-between items-center">
                 <nav className="border-b border-gray-500 dark:border-gray-700">
-                    <Tab title={`Queries (${queryLog.length})`}
+                    {queryLog && <Tab title={`Queries (${queryLog.length})`}
                         active={currentTab === 'query'}
-                        onClick={() => setTab('query')} />
+                        onClick={() => setTab('query')} />}
                 </nav>
                 <div>
                     <button onClick={() => decreaseInspectorHeight()}>
@@ -41,7 +41,7 @@ export default function Inspector({ queryLog }) {
             </div>
 
             <div className="flex flex-col" style={{ height: `${height}rem` }}>
-                {currentTab === 'query' && <DatabaseQueries queryLog={queryLog} />}
+                {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
             </div>
         </div>
     );
