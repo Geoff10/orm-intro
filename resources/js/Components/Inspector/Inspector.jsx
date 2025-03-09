@@ -1,9 +1,11 @@
 import { useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
+import QueuedJobs from "./QueuedJobs";
+import QueuedJobsHistory from "./QueuedJobsHistory";
 import Tab from "@/Components/Navigation/Tab";
 
-export default function Inspector({ queryLog = null }) {
-    const [currentTab, setCurrentTab] = useState('query');
+export default function Inspector({ queryLog = null, queueLog = null }) {
+    const [currentTab, setCurrentTab] = useState(queryLog ? 'query' : 'queue');
     const [height, setHeight] = useState(24);
 
     const setTab = (tab) => {
@@ -29,6 +31,12 @@ export default function Inspector({ queryLog = null }) {
                     {queryLog && <Tab title={`Queries (${queryLog.length})`}
                         active={currentTab === 'query'}
                         onClick={() => setTab('query')} />}
+                    {queueLog && <Tab title={`Queued Jobs (${queueLog.jobs.length})`}
+                        active={currentTab === 'queue'}
+                        onClick={() => setTab('queue')} />}
+                    {queueLog && <Tab title={`Queue History (${queueLog.history.length})`}
+                        active={currentTab === 'queueHistory'}
+                        onClick={() => setTab('queueHistory')} />}
                 </nav>
                 <div>
                     <button onClick={() => decreaseInspectorHeight()}>
@@ -42,6 +50,8 @@ export default function Inspector({ queryLog = null }) {
 
             <div className="flex flex-col" style={{ height: `${height}rem` }}>
                 {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
+                {currentTab === 'queue' && queueLog && <QueuedJobs queueLog={queueLog} />}
+                {currentTab === 'queueHistory' && queueLog && <QueuedJobsHistory queueLog={queueLog} />}
             </div>
         </div>
     );
