@@ -3,9 +3,7 @@
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Workbook\SelectDataController;
 use App\Http\Controllers\Workbook\WorkbookController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,7 +20,6 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/wb/eloquentSelectData/selectData');
 
-Route::get('workbook/selecting-data', SelectDataController::class);
 Route::get('wb/{workbook}/{chapter}', WorkbookController::class)->name('workbook');
 
 Route::get('example/{module}/{exercise}', ExampleController::class)
