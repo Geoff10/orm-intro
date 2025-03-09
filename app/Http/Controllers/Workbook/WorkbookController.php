@@ -31,12 +31,18 @@ class WorkbookController extends Controller
                 return abort(404);
             }
 
-            return Inertia::render('Workbook/SelectData', [
+            $props = [
                 'workbook' => $workbook->toArray(),
                 'chapter' => $chapter->toArray(),
                 'next_chapter' => $workbook->getNextChapter($chapter->id())?->toArray(['id', 'title']),
                 'previous_chapter' => $workbook->getPreviousChapter($chapter->id())?->toArray(['id', 'title']),
-            ]);
+            ];
+
+            // TODO: Make this use something more generic than the workbook ID. Eg. a type property on the workbook
+            return match ($workbook->id()) {
+                'eloquentSelectData' => Inertia::render('Workbook/SelectData', $props),
+                default => abort(404),
+            };
         }
 
         return abort(404);
