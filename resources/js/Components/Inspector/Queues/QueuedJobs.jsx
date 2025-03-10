@@ -1,4 +1,4 @@
-import QueuedJob from "./Queues/QueuedJob";
+import QueuedJob from "./QueuedJob";
 
 export default function QueuedJobs({ queueLog, filters }) {
     return (

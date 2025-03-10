@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
-import QueuedJobs from "./QueuedJobs";
-import QueuedJobsHistory from "./QueuedJobsHistory";
+import QueuedJobs from "./Queues/QueuedJobs";
+import QueuedJobsHistory from "./Queues/QueuedJobsHistory";
 import withJobFiltering from "./Queues/JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
 
