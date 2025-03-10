@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
 import QueuedJobs from "./QueuedJobs";
 import QueuedJobsHistory from "./QueuedJobsHistory";
-import withJobFiltering from "./JobFiltering";
+import withJobFiltering from "./Queues/JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
 
 export default function Inspector({ queryLog = null, queueLog = null }) {
