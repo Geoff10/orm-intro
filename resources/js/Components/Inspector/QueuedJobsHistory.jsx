@@ -1,4 +1,4 @@
-export default function QueuedJobs({ queueLog, filters }) {
+export default function QueuedJobs({ queueLog, filters, setFilterJobId }) {
     return (
         <>
             <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
@@ -15,7 +15,11 @@ export default function QueuedJobs({ queueLog, filters }) {
                     <tbody>
                         {queueLog.map((item, index) => (
                             <tr key={'queueJobHistory-' + index} className={index % 2 == 0 ? 'bg-slate-200' : ''}>
-                                <td className='py-1'>{item.jobId}</td>
+                                <td className='py-1'>
+                                    <button onClick={() => setFilterJobId(item.jobId)} className='text-blue-500 hover:text-blue-700'>
+                                        {item.jobId}
+                                    </button>
+                                </td>
                                 <td className='py-1'>{item.message}</td>
                             </tr>
                         ))}

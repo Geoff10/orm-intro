@@ -56,7 +56,7 @@ export default function withJobFiltering(WrappedComponent) {
             </div>
         </>)
 
-        return <WrappedComponent {...props} queueLog={managedQueueLog} filters={filters} />;
+        return <WrappedComponent {...props} queueLog={managedQueueLog} filters={filters} setFilterJobId={setFilterJobId} />;
     };
 
     return WithJobFilteringComponent;
