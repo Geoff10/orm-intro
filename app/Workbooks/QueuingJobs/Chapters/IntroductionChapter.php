@@ -33,6 +33,18 @@ class IntroductionChapter extends Chapter
             ],
             [
                 'type' => 'runnableCodeBlock',
+                "title" => "What if we don't use a queue?",
+                'text' => [
+                    'Here we are going to simulate a slow task that takes between 1 and 5 seconds to complete. This task is not being queued, so it will run immediately.',
+                ],
+                'code' => function (): array {
+                    SlowJobExample::dispatchSync(session()->get('session_identifier'));
+
+                    return [];
+                },
+            ],
+            [
+                'type' => 'runnableCodeBlock',
                 "title" => "Add to Queue",
                 'text' => [
                     'Put a new task in the queue.',

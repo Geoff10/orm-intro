@@ -4,18 +4,19 @@ namespace App\Jobs\Abstracts;
 
 use App\Events\JobStatusChanged;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 
 abstract class TrackedJob implements ShouldQueue
 {
+    use Dispatchable;
     use Queueable;
 
-    readonly public string $id;
+    public string $id;
 
     public function __construct(
         protected string $uniqueSessionId,
-    )
-    {
+    ) {
         $this->id = substr(md5(random_int(1, 1_000_000_000_000)), -12);
 
         $this->updateStatus('queued');
