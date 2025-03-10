@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Workbooks;
 
+use Illuminate\Support\Collection;
+
 abstract class Workbook
 {
     abstract public function id(): string;
     abstract public function title(): string;
     abstract protected function chapters(): array;
+
+    protected bool $hideClosures = false;
 
     public function toArray(): array
     {
@@ -22,6 +26,9 @@ abstract class Workbook
     public function getChapters(): array
     {
         return collect($this->chapters())
+            ->when($this->hideClosures, function (Collection $chapters) {
+                return $chapters->each(fn (Chapter $chapter) => $chapter->setHideClosures());
+            })
             ->keyBy(fn (Chapter $chapter) => $chapter->id())
             ->toArray();
     }
@@ -71,5 +78,10 @@ abstract class Workbook
         }
 
         return $chapters[$previousChapter];
+    }
+
+    public function setHideClosures(bool $hideClosures = true): void
+    {
+        $this->hideClosures = $hideClosures;
     }
 }

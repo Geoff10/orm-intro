@@ -25,6 +25,7 @@ class WorkbookController extends Controller
         }
 
         $workbook = new $workbook;
+        $workbook->setHideClosures(true);
 
         if ($chapter) {
             $chapter = $workbook->getChapter($chapter);
