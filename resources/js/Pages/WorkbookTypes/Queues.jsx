@@ -67,7 +67,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg grow basis-0 flex flex-col">
-                    <Inspector queueLog={queueLog} />
+                    <Inspector queueLog={queueLog} fullHeight={true} />
                 </div>
             </div>
         </WorkbookLayout>

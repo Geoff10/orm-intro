@@ -5,7 +5,7 @@ import QueuedJobsHistory from "./Queues/QueuedJobsHistory";
 import withJobFiltering from "./Queues/JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
 
-export default function Inspector({ queryLog = null, queueLog = null }) {
+export default function Inspector({ queryLog = null, queueLog = null, fullHeight = false }) {
     const [currentTab, setCurrentTab] = useState(queryLog ? 'query' : 'queue');
     const [height, setHeight] = useState(24);
 
@@ -29,7 +29,7 @@ export default function Inspector({ queryLog = null, queueLog = null }) {
     const EnhancedQueuedJobsHistory = useMemo(() => withJobFiltering(QueuedJobsHistory), [QueuedJobsHistory]);
 
     return (
-        <div className="w-full flex flex-col" style={InspectorStyling}>
+        <div className={`w-full flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={InspectorStyling}>
             <div className="flex justify-between items-center">
                 <nav className="border-b border-gray-500 dark:border-gray-700">
                     {queryLog && <Tab title={`Queries (${queryLog.length})`}
@@ -42,17 +42,17 @@ export default function Inspector({ queryLog = null, queueLog = null }) {
                         active={currentTab === 'queueHistory'}
                         onClick={() => setTab('queueHistory')} />}
                 </nav>
-                <div>
+                {fullHeight || <div>
                     <button onClick={() => decreaseInspectorHeight()}>
                         <span className="material-symbols-rounded">remove</span>
                     </button>
                     <button onClick={() => increaseInspectorHeight()}>
                         <span className="material-symbols-rounded">add</span>
                     </button>
-                </div>
+                </div>}
             </div>
 
-            <div className="flex flex-col" style={{ height: `${height}rem` }}>
+            <div className={`flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={{ height: fullHeight ? '100%' : `${height}rem` }}>
                 {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
                 {currentTab === 'queue' && queueLog && <EnhancedQueuedJobs queueLog={queueLog.jobs} />}
                 {currentTab === 'queueHistory' && queueLog && <EnhancedQueuedJobsHistory queueLog={queueLog.history} />}
