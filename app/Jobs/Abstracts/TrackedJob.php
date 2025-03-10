@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Jobs\Traits;
+namespace App\Jobs\Abstracts;
 
 use App\Events\JobStatusChanged;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-abstract class TrackedJob
+abstract class TrackedJob implements ShouldQueue
 {
     use Queueable;
 
     readonly public string $id;
 
-    public function __construct()
+    public function __construct(
+        protected string $uniqueSessionId,
+    )
     {
         $this->id = substr(md5(random_int(1, 1_000_000_000_000)), -12);
 
@@ -26,7 +29,7 @@ abstract class TrackedJob
     protected function updateStatus(string $status): void
     {
         JobStatusChanged::dispatch(
-            session()->get('session_identifier'),
+            $this->uniqueSessionId,
             $this->id,
             $status,
         );

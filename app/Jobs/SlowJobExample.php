@@ -2,10 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Traits\TrackedJob;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Jobs\Abstracts\TrackedJob;
 
-class SlowJobExample extends TrackedJob implements ShouldQueue
+class SlowJobExample extends TrackedJob
 {
     public function handle(): void
     {

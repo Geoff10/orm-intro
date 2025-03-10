@@ -38,7 +38,7 @@ class IntroductionChapter extends Chapter
                     'Put a new task in the queue.',
                 ],
                 'code' => function (): array {
-                    SlowJobExample::dispatch();
+                    SlowJobExample::dispatch(session()->get('session_identifier'));
 
                     return [];
                 },
