@@ -52,6 +52,7 @@ export default function withJobFiltering(WrappedComponent) {
                 <div>
                     <label htmlFor="jobIdFilter" className="mr-2">Job ID:</label>
                     <input type="text" id="jobIdFilter" name="jobIdFilter" value={filterJobId} onChange={(e) => setFilterJobId(e.target.value)} className="p-0" />
+                    {filterJobId !== '' && <button onClick={() => setFilterJobId('')} className="ml-2">Clear</button>}
                 </div>
             </div>
         </>)
