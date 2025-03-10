@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
 import QueuedJobs from "./QueuedJobs";
 import QueuedJobsHistory from "./QueuedJobsHistory";
+import withJobFiltering from "./JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
 
 export default function Inspector({ queryLog = null, queueLog = null }) {
@@ -23,6 +24,8 @@ export default function Inspector({ queryLog = null, queueLog = null }) {
             setHeight(height - 24);
         }
     }
+
+    const EnhancedQueuedJobs = useMemo(() => withJobFiltering(QueuedJobs), [QueuedJobs]);
 
     return (
         <div className="w-full flex flex-col" style={InspectorStyling}>
@@ -50,7 +53,7 @@ export default function Inspector({ queryLog = null, queueLog = null }) {
 
             <div className="flex flex-col" style={{ height: `${height}rem` }}>
                 {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
-                {currentTab === 'queue' && queueLog && <QueuedJobs queueLog={queueLog} />}
+                {currentTab === 'queue' && queueLog && <EnhancedQueuedJobs queueLog={queueLog.jobs} />}
                 {currentTab === 'queueHistory' && queueLog && <QueuedJobsHistory queueLog={queueLog} />}
             </div>
         </div>
