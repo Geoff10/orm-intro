@@ -6,6 +6,7 @@ use App\Events\JobStatusChanged;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Cache;
 
 abstract class TrackedJob implements ShouldQueue
 {
@@ -13,6 +14,8 @@ abstract class TrackedJob implements ShouldQueue
     use Queueable;
 
     public string $id;
+
+    abstract protected function run(): void;
 
     public function __construct(
         protected string $uniqueSessionId,
@@ -25,6 +28,24 @@ abstract class TrackedJob implements ShouldQueue
     public function failed(): void
     {
         $this->updateStatus('failed');
+    }
+
+    public function handle(): void
+    {
+        if (Cache::get("user-{$this->uniqueSessionId}-usage", 0) >= 4) {
+            $this->fail('You are performing too many actions at once. Please wait a moment and try again.');
+            return;
+        }
+
+        Cache::increment("user-{$this->uniqueSessionId}-usage");
+
+        $this->updateStatus('processing');
+
+        $this->run();
+
+        Cache::decrement("user-{$this->uniqueSessionId}-usage");
+
+        $this->updateStatus('completed');
     }
 
     protected function updateStatus(string $status): void
