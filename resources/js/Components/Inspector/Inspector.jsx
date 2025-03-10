@@ -38,9 +38,6 @@ export default function Inspector({ queryLog = null, queueLog = null, fullHeight
                     {queueLog && <Tab title={`Queued Jobs (${queueLog.jobs.length})`}
                         active={currentTab === 'queue'}
                         onClick={() => setTab('queue')} />}
-                    {queueLog && <Tab title={`Queue History (${queueLog.history.length})`}
-                        active={currentTab === 'queueHistory'}
-                        onClick={() => setTab('queueHistory')} />}
                 </nav>
                 {fullHeight || <div>
                     <button onClick={() => decreaseInspectorHeight()}>
@@ -55,7 +52,6 @@ export default function Inspector({ queryLog = null, queueLog = null, fullHeight
             <div className={`flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={{ height: fullHeight ? '100%' : `${height}rem` }}>
                 {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
                 {currentTab === 'queue' && queueLog && <EnhancedQueuedJobs queueLog={queueLog.jobs} />}
-                {currentTab === 'queueHistory' && queueLog && <EnhancedQueuedJobsHistory queueLog={queueLog.history} />}
             </div>
         </div>
     );

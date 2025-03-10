@@ -31,11 +31,26 @@ export default function QueuedJob({ job, ...props }) {
             case 'completed':
                 return <span className="mr-2 material-symbols-rounded">check_circle</span>;
         }
-    }
+    };
 
-    return (<div {...props} className={getJobClasses(job)}>
-        {getIndicatorSymbol(job)}
-        <div className="flex-grow">{job.jobId}</div>
-        <div className="flex-grow text-right">{job.status}</div>
-    </div>);
+    return (<details {...props} className={getJobClasses(job)}>
+        <summary className="flex items-center w-full select-none cursor-pointer">
+            {getIndicatorSymbol(job)}
+            <div className="flex-grow">{job.jobId}</div>
+            <div className="flex-grow text-right">{job.status}</div>
+        </summary>
+        <div className="p-2">
+            <ul className="border-l border-gray-400 pl-2">
+                {job.history.map((history, index) => (
+                    <li key={'jobHistory-' + index} className="flex items-center">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full -ml-3 mr-3"></div>
+                        <div className="flex-grow">
+                            <div>{history.message} ({history.status})</div>
+                            <div className="text-sm text-gray-500">{history.timestamp}</div>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </details>);
 }

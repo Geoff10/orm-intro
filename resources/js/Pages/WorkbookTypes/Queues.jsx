@@ -9,38 +9,40 @@ import axios from 'axios';
 export default function SelectData({ workbook, chapter, previous_chapter, next_chapter, uniqueSessionId }) {
     const queueLogReducer = (state, job) => {
         let jobs = state.jobs;
-        let history = state.history;
 
         const index = jobs.findIndex((item) => item.jobId === job.jobId);
 
-        let historyItem = {
-            jobId: job.jobId,
-            timestamp: new Date().toISOString(),
-            status: job.status,
-        }
-
         if (index !== -1) {
-            historyItem.oldStatus = jobs[index].status;
-            historyItem.message = job.status === 'queued' ?
+            let jobMessage = job.status === 'queued' ?
                 'Job has been put back in the queue' :
                 `Job status changed to ${job.status}`;
 
-            jobs[index] = job;
+            jobs[index].history.push({
+                timestamp: new Date().toISOString(),
+                status: job.status,
+                oldStatus: jobs[index].status,
+                message: job.message ?? jobMessage,
+            });
+            jobs[index].status = job.status;
         } else {
-            historyItem.oldStatus = null;
-            historyItem.message = 'Job has been added to the queue';
-
-            jobs = [job, ...jobs];
+            jobs = [{
+                jobId: job.jobId,
+                status: job.status,
+                history: [
+                    {
+                        timestamp: new Date().toISOString(),
+                        status: job.status,
+                        oldStatus: null,
+                        message: 'Job has been added to the queue',
+                    }
+                ]
+            }, ...jobs];
         }
 
-        if (historyItem.status !== historyItem.oldStatus) {
-            history.push(historyItem);
-        }
-
-        return { ...state, jobs, history };
+        return { ...state, jobs };
     }
 
-    const [queueLog, setQueueLog] = useReducer(queueLogReducer, { jobs: [], history: [] });
+    const [queueLog, setQueueLog] = useReducer(queueLogReducer, { jobs: [] });
 
     const loadPreviewDisplay = (url, title, options) => {
         axios.get(url, { params: options });
