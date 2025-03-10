@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
 import QueuedJobs from "./Queues/QueuedJobs";
-import QueuedJobsHistory from "./Queues/QueuedJobsHistory";
 import withJobFiltering from "./Queues/JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
 
@@ -26,7 +25,6 @@ export default function Inspector({ queryLog = null, queueLog = null, fullHeight
     }
 
     const EnhancedQueuedJobs = useMemo(() => withJobFiltering(QueuedJobs), [QueuedJobs]);
-    const EnhancedQueuedJobsHistory = useMemo(() => withJobFiltering(QueuedJobsHistory), [QueuedJobsHistory]);
 
     return (
         <div className={`w-full flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={InspectorStyling}>
