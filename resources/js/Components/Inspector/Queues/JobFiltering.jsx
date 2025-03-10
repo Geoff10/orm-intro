@@ -10,21 +10,16 @@ export default function withJobFiltering(WrappedComponent) {
 
         const [managedQueueLog, setManagedQueueLog] = useState(props.queueLog);
         const [filterStatus, setFilterStatus] = useReducer(statusReducer, []);
-        const [filterJobId, setFilterJobId] = useState('');
 
         useEffect(() => {
             setManagedQueueLog(props.queueLog.filter(job => {
-                if (filterJobId !== '' && job.jobId.indexOf(filterJobId) === -1) {
-                    return false;
-                }
-
                 if (filterStatus.length > 0) {
                     return filterStatus.includes(job.status);
                 }
 
                 return true;
             }));
-        }, [filterStatus, filterJobId, props]);
+        }, [filterStatus, props]);
 
         const filters = (<>
             <div>
@@ -49,15 +44,10 @@ export default function withJobFiltering(WrappedComponent) {
                         <label htmlFor="completedStatus" className='ml-2 select-none'>Completed</label>
                     </div>
                 </fieldset>
-                <div>
-                    <label htmlFor="jobIdFilter" className="mr-2">Job ID:</label>
-                    <input type="text" id="jobIdFilter" name="jobIdFilter" value={filterJobId} onChange={(e) => setFilterJobId(e.target.value)} className="p-0" />
-                    {filterJobId !== '' && <button onClick={() => setFilterJobId('')} className="ml-2">Clear</button>}
-                </div>
             </div>
         </>)
 
-        return <WrappedComponent {...props} queueLog={managedQueueLog} filters={filters} setFilterJobId={setFilterJobId} />;
+        return <WrappedComponent {...props} queueLog={managedQueueLog} filters={filters} />;
     };
 
     return WithJobFilteringComponent;
