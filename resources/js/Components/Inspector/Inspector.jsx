@@ -26,6 +26,7 @@ export default function Inspector({ queryLog = null, queueLog = null }) {
     }
 
     const EnhancedQueuedJobs = useMemo(() => withJobFiltering(QueuedJobs), [QueuedJobs]);
+    const EnhancedQueuedJobsHistory = useMemo(() => withJobFiltering(QueuedJobsHistory), [QueuedJobsHistory]);
 
     return (
         <div className="w-full flex flex-col" style={InspectorStyling}>
@@ -54,7 +55,7 @@ export default function Inspector({ queryLog = null, queueLog = null }) {
             <div className="flex flex-col" style={{ height: `${height}rem` }}>
                 {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
                 {currentTab === 'queue' && queueLog && <EnhancedQueuedJobs queueLog={queueLog.jobs} />}
-                {currentTab === 'queueHistory' && queueLog && <QueuedJobsHistory queueLog={queueLog} />}
+                {currentTab === 'queueHistory' && queueLog && <EnhancedQueuedJobsHistory queueLog={queueLog.history} />}
             </div>
         </div>
     );

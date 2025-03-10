@@ -16,7 +16,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
         let historyItem = {
             jobId: job.jobId,
             timestamp: new Date().toISOString(),
-            newStatus: job.status,
+            status: job.status,
         }
 
         if (index !== -1) {
@@ -33,7 +33,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
             jobs.push(job);
         }
 
-        if (historyItem.newStatus !== historyItem.oldStatus) {
+        if (historyItem.status !== historyItem.oldStatus) {
             history.push(historyItem);
         }
 
