@@ -20,6 +20,7 @@ class JobStatusChanged implements ShouldBroadcastNow
         public string $uniqueSessionId,
         public string $jobId,
         public string $status,
+        public ?string $message = null,
     ) {}
 
     /**

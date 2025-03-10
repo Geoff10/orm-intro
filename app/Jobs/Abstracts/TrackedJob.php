@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Cache;
+use Throwable;
 
 abstract class TrackedJob implements ShouldQueue
 {
@@ -25,9 +26,9 @@ abstract class TrackedJob implements ShouldQueue
         $this->updateStatus('queued');
     }
 
-    public function failed(): void
+    public function failed(Throwable $e): void
     {
-        $this->updateStatus('failed');
+        $this->updateStatus('failed', $e->getMessage());
     }
 
     public function handle(): void
@@ -48,12 +49,13 @@ abstract class TrackedJob implements ShouldQueue
         $this->updateStatus('completed');
     }
 
-    protected function updateStatus(string $status): void
+    protected function updateStatus(string $status, ?string $message = null): void
     {
         JobStatusChanged::dispatch(
             $this->uniqueSessionId,
             $this->id,
             $status,
+            $message,
         );
     }
 }
