@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Workbooks\QueuingJobs\Chapters;
 
-use App\Events\JobStatusChanged;
+use App\Jobs\SlowJobExample;
 use App\Workbooks\Chapter;
-use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Log;
 
 class IntroductionChapter extends Chapter
 {
@@ -40,21 +38,7 @@ class IntroductionChapter extends Chapter
                     'Put a new task in the queue.',
                 ],
                 'code' => function (): array {
-                    Log::info('Queued a job');
-
-                    Broadcast::on('session.' . session()->get('session_identifier'))
-                        ->as('JobStatusChanged')
-                        ->with([
-                            'jobId' => 123,
-                            'status' => 'queued',
-                        ])
-                        ->sendNow();
-
-                    // JobStatusChanged::dispatch(
-                    //     session()->get('session_identifier'),
-                    //     123,
-                    //     'Queued',
-                    // );
+                    SlowJobExample::dispatch();
 
                     return [];
                 },
