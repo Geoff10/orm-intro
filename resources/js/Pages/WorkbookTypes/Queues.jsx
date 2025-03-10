@@ -30,7 +30,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
             historyItem.oldStatus = null;
             historyItem.message = 'Job has been added to the queue';
 
-            jobs.push(job);
+            jobs = [job, ...jobs];
         }
 
         if (historyItem.status !== historyItem.oldStatus) {
