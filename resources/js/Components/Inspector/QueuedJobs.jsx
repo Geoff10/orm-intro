@@ -1,22 +1,43 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 
 export default function QueuedJobs({ queueLog }) {
-    const [showBindings, setShowBindings] = useState(false);
-    const [showTime, setShowTime] = useState(false);
+    const statusReducer = (state, jobStatus) => {
+        return state.includes(jobStatus) ?
+            state.filter(status => status !== jobStatus) :
+            [...state, jobStatus];
+    };
+
+    const [filterStatus, setFilterStatus] = useReducer(statusReducer, []);
+
+    const filteredJobs = queueLog.jobs.filter(job => {
+        if (filterStatus.length === 0) {
+            return true;
+        }
+
+        return filterStatus.includes(job.status);
+    });
 
     return (
         <>
             <div className='border-t border-b border-gray-500 px-1 py-1 flex'>
                 <div className="mr-3">
-                    Display:
+                    Statuses:
                 </div>
                 <div className="mr-3">
-                    <input type="checkbox" id="showBindings" name="showBindings" checked={showBindings} onChange={() => setShowBindings(!showBindings)} />
-                    <label htmlFor="showBindings" className='ml-2 select-none'>Bindings</label>
+                    <input type="checkbox" id="queuedStatus" name="queuedStatus" checked={filterStatus.includes('queued')} onChange={() => setFilterStatus('queued')} />
+                    <label htmlFor="queuedStatus" className='ml-2 select-none'>Queued</label>
+                </div>
+                <div className="mr-3">
+                    <input type="checkbox" id="processingStatus" name="processingStatus" checked={filterStatus.includes('processing')} onChange={() => setFilterStatus('processing')} />
+                    <label htmlFor="processingStatus" className='ml-2 select-none'>Processing</label>
+                </div>
+                <div className="mr-3">
+                    <input type="checkbox" id="failedStatus" name="failedStatus" checked={filterStatus.includes('failed')} onChange={() => setFilterStatus('failed')} />
+                    <label htmlFor="failedStatus" className='ml-2 select-none'>Failed</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="showTime" name="showTime" checked={showTime} onChange={() => setShowTime(!showTime)} />
-                    <label htmlFor="showTime" className='ml-2 select-none'>Time</label>
+                    <input type="checkbox" id="completedStatus" name="completedStatus" checked={filterStatus.includes('completed')} onChange={() => setFilterStatus('completed')} />
+                    <label htmlFor="completedStatus" className='ml-2 select-none'>Completed</label>
                 </div>
             </div>
             <div className='grow basis-0 overflow-y-auto'>
@@ -25,21 +46,13 @@ export default function QueuedJobs({ queueLog }) {
                         <tr className='text-left'>
                             <th>Job ID</th>
                             <th>Status</th>
-                            {/* {showBindings && <th>Bindings</th>}
-                            {showTime && <th>Time</th>} */}
                         </tr>
                     </thead>
                     <tbody>
-                        {queueLog.jobs.map((job, index) => (
+                        {filteredJobs.map((job, index) => (
                             <tr key={'queueJob-' + index} className={index % 2 == 0 ? 'bg-slate-200' : ''}>
                                 <td className='py-1'>{job.jobId}</td>
                                 <td className='py-1'>{job.status}</td>
-                                {/* {showBindings && (
-                                    <td>
-                                        <pre>{query.bindings ? JSON.stringify(query.bindings, null, 2) : ''}</pre>
-                                    </td>
-                                )}
-                                {showTime && <td>{query.time}</td>} */}
                             </tr>
                         ))}
                     </tbody>
