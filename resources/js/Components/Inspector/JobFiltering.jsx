@@ -10,39 +10,50 @@ export default function withJobFiltering(WrappedComponent) {
 
         const [managedQueueLog, setManagedQueueLog] = useState(props.queueLog);
         const [filterStatus, setFilterStatus] = useReducer(statusReducer, []);
+        const [filterJobId, setFilterJobId] = useState('');
 
         useEffect(() => {
             setManagedQueueLog(props.queueLog.filter(job => {
-                if (filterStatus.length === 0) {
-                    return true;
+                if (filterJobId !== '' && job.jobId.indexOf(filterJobId) === -1) {
+                    return false;
                 }
 
-                return filterStatus.includes(job.status);
+                if (filterStatus.length > 0) {
+                    return filterStatus.includes(job.status);
+                }
+
+                return true;
             }));
-        }, [filterStatus, props]);
+        }, [filterStatus, filterJobId, props]);
 
         const filters = (<>
-            <fieldset className="flex">
-                <div className="mr-3">
-                    <legend>Statuses:</legend>
-                </div>
-                <div className="mr-3">
-                    <input type="checkbox" id="queuedStatus" name="queuedStatus" checked={filterStatus.includes('queued')} onChange={() => setFilterStatus('queued')} />
-                    <label htmlFor="queuedStatus" className='ml-2 select-none'>Queued</label>
-                </div>
-                <div className="mr-3">
-                    <input type="checkbox" id="processingStatus" name="processingStatus" checked={filterStatus.includes('processing')} onChange={() => setFilterStatus('processing')} />
-                    <label htmlFor="processingStatus" className='ml-2 select-none'>Processing</label>
-                </div>
-                <div className="mr-3">
-                    <input type="checkbox" id="failedStatus" name="failedStatus" checked={filterStatus.includes('failed')} onChange={() => setFilterStatus('failed')} />
-                    <label htmlFor="failedStatus" className='ml-2 select-none'>Failed</label>
-                </div>
+            <div>
+                <fieldset className="flex">
+                    <div className="mr-3">
+                        <legend>Statuses:</legend>
+                    </div>
+                    <div className="mr-3">
+                        <input type="checkbox" id="queuedStatus" name="queuedStatus" checked={filterStatus.includes('queued')} onChange={() => setFilterStatus('queued')} />
+                        <label htmlFor="queuedStatus" className='ml-2 select-none'>Queued</label>
+                    </div>
+                    <div className="mr-3">
+                        <input type="checkbox" id="processingStatus" name="processingStatus" checked={filterStatus.includes('processing')} onChange={() => setFilterStatus('processing')} />
+                        <label htmlFor="processingStatus" className='ml-2 select-none'>Processing</label>
+                    </div>
+                    <div className="mr-3">
+                        <input type="checkbox" id="failedStatus" name="failedStatus" checked={filterStatus.includes('failed')} onChange={() => setFilterStatus('failed')} />
+                        <label htmlFor="failedStatus" className='ml-2 select-none'>Failed</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="completedStatus" name="completedStatus" checked={filterStatus.includes('completed')} onChange={() => setFilterStatus('completed')} />
+                        <label htmlFor="completedStatus" className='ml-2 select-none'>Completed</label>
+                    </div>
+                </fieldset>
                 <div>
-                    <input type="checkbox" id="completedStatus" name="completedStatus" checked={filterStatus.includes('completed')} onChange={() => setFilterStatus('completed')} />
-                    <label htmlFor="completedStatus" className='ml-2 select-none'>Completed</label>
+                    <label htmlFor="jobIdFilter" className="mr-2">Job ID:</label>
+                    <input type="text" id="jobIdFilter" name="jobIdFilter" value={filterJobId} onChange={(e) => setFilterJobId(e.target.value)} className="p-0" />
                 </div>
-            </fieldset>
+            </div>
         </>)
 
         return <WrappedComponent {...props} queueLog={managedQueueLog} filters={filters} />;
