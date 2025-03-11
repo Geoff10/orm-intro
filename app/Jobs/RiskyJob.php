@@ -6,8 +6,6 @@ use App\Jobs\Abstracts\TrackedJob;
 
 class RiskyJob extends TrackedJob
 {
-    public $queue = 'priority';
-
     public function jobDisplayName(): string
     {
         return '⚠️ Risky';
