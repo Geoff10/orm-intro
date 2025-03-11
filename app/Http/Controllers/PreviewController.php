@@ -26,7 +26,7 @@ class PreviewController extends Controller
         $content = (new $chapterClass())->getContent();
         $block = $content[$exercise] ?? null;
 
-        if (!$block || $block['type'] !== 'runnableCodeBlock' || !isset($block['code'])) {
+        if (!$block || !isset($block['code'])) {
             Log::error("There is no block, or the block is not a runnable code block, or the block does not have code.");
             return abort(404);
         }

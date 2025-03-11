@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Workbook;
 
 use App\Http\Controllers\Controller;
 use App\Workbooks\EloquentSelectData\EloquentSelectData;
+use App\Workbooks\QueuingJobs\QueuingJobs;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -12,6 +13,7 @@ class WorkbookController extends Controller
     // TODO: Key this dynamically from the workbooks IDs
     private $workbooks = [
         'eloquentSelectData' => EloquentSelectData::class,
+        'queuingJobs' => QueuingJobs::class,
     ];
 
     public function __invoke(string $workbook, ?string $chapter): Response
@@ -23,6 +25,7 @@ class WorkbookController extends Controller
         }
 
         $workbook = new $workbook;
+        $workbook->setHideClosures(true);
 
         if ($chapter) {
             $chapter = $workbook->getChapter($chapter);
@@ -31,12 +34,20 @@ class WorkbookController extends Controller
                 return abort(404);
             }
 
-            return Inertia::render('Workbook/SelectData', [
+            $props = [
+                'uniqueSessionId' => session()->get('session_identifier'),
                 'workbook' => $workbook->toArray(),
                 'chapter' => $chapter->toArray(),
                 'next_chapter' => $workbook->getNextChapter($chapter->id())?->toArray(['id', 'title']),
                 'previous_chapter' => $workbook->getPreviousChapter($chapter->id())?->toArray(['id', 'title']),
-            ]);
+            ];
+
+            // TODO: Make this use something more generic than the workbook ID. Eg. a type property on the workbook
+            return match ($workbook->id()) {
+                'eloquentSelectData' => Inertia::render('WorkbookTypes/DatabaseQueries', $props),
+                'queuingJobs' => Inertia::render('WorkbookTypes/Queues', $props),
+                default => abort(404, 'Unknown workbook type'),
+            };
         }
 
         return abort(404);

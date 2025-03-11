@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DatabaseQueries from "./DatabaseQueries";
+import QueuedJobs from "./Queues/QueuedJobs";
+import withJobFiltering from "./Queues/JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
 
-export default function Inspector({ queryLog }) {
-    const [currentTab, setCurrentTab] = useState('query');
+export default function Inspector({ queryLog = null, queueLog = null, fullHeight = false }) {
+    const [currentTab, setCurrentTab] = useState(queryLog ? 'query' : 'queue');
     const [height, setHeight] = useState(24);
 
     const setTab = (tab) => {
@@ -22,26 +24,32 @@ export default function Inspector({ queryLog }) {
         }
     }
 
+    const EnhancedQueuedJobs = useMemo(() => withJobFiltering(QueuedJobs), [QueuedJobs]);
+
     return (
-        <div className="w-full flex flex-col" style={InspectorStyling}>
+        <div className={`w-full flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={InspectorStyling}>
             <div className="flex justify-between items-center">
                 <nav className="border-b border-gray-500 dark:border-gray-700">
-                    <Tab title={`Queries (${queryLog.length})`}
+                    {queryLog && <Tab title={`Queries (${queryLog.length})`}
                         active={currentTab === 'query'}
-                        onClick={() => setTab('query')} />
+                        onClick={() => setTab('query')} />}
+                    {queueLog && <Tab title={`Queued Jobs (${queueLog.jobs.length})`}
+                        active={currentTab === 'queue'}
+                        onClick={() => setTab('queue')} />}
                 </nav>
-                <div>
+                {fullHeight || <div>
                     <button onClick={() => decreaseInspectorHeight()}>
                         <span className="material-symbols-rounded">remove</span>
                     </button>
                     <button onClick={() => increaseInspectorHeight()}>
                         <span className="material-symbols-rounded">add</span>
                     </button>
-                </div>
+                </div>}
             </div>
 
-            <div className="flex flex-col" style={{ height: `${height}rem` }}>
-                {currentTab === 'query' && <DatabaseQueries queryLog={queryLog} />}
+            <div className={`flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={{ height: fullHeight ? '100%' : `${height}rem` }}>
+                {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
+                {currentTab === 'queue' && queueLog && <EnhancedQueuedJobs queueLog={queueLog.jobs} />}
             </div>
         </div>
     );
