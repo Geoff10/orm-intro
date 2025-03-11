@@ -7,6 +7,7 @@ namespace App\Workbooks\QueuingJobs;
 use App\Workbooks\QueuingJobs\Chapters\CreatingAJobChapter;
 use App\Workbooks\QueuingJobs\Chapters\DelayJobsStartChapter;
 use App\Workbooks\QueuingJobs\Chapters\JobFailuresChapter;
+use App\Workbooks\QueuingJobs\Chapters\PlaygroundChapter;
 use App\Workbooks\QueuingJobs\Chapters\PriorityJobsChapter;
 use App\Workbooks\QueuingJobs\Chapters\RetryingJobsChapter;
 use App\Workbooks\QueuingJobs\Chapters\RetryingJobsWithDelayChapter;
@@ -35,6 +36,7 @@ class QueuingJobs extends Workbook
             new RetryingJobsChapter(),
             new RetryingJobsWithDelayChapter(),
             new DelayJobsStartChapter(),
+            new PlaygroundChapter(),
         ];
     }
 }
