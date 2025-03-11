@@ -27,6 +27,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
         } else {
             jobs = [{
                 jobId: job.jobId,
+                name: job.name,
                 status: job.status,
                 history: [
                     {

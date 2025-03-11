@@ -19,6 +19,7 @@ class JobStatusChanged implements ShouldBroadcastNow
     public function __construct(
         public string $uniqueSessionId,
         public string $jobId,
+        public string $name,
         public string $status,
         public ?string $message = null,
     ) {}

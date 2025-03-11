@@ -17,6 +17,8 @@ abstract class TrackedJob implements ShouldQueue
 
     abstract protected function run(): void;
 
+    abstract public function jobDisplayName(): string;
+
     public function __construct(
         protected string $uniqueSessionId,
     ) {
@@ -53,6 +55,7 @@ abstract class TrackedJob implements ShouldQueue
         JobStatusChanged::dispatch(
             $this->uniqueSessionId,
             $this->id,
+            $this->jobDisplayName(),
             $status,
             $message,
         );

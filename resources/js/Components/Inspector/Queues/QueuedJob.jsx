@@ -37,6 +37,7 @@ export default function QueuedJob({ job, ...props }) {
         <summary className="flex items-center w-full select-none cursor-pointer">
             {getIndicatorSymbol(job)}
             <div className="flex-grow">{job.jobId}</div>
+            <div className="flex-grow">{job.name}</div>
             <div className="flex-grow text-right">{job.status}</div>
         </summary>
         <div className="p-2">
