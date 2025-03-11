@@ -64,11 +64,11 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
 
         instance.get(url, { params: options })
             .then((response) => {
-                setNetworkLog([...networkLog, {
+                setNetworkLog([{
                     method: response.config.method,
                     status: response.status,
                     duration: response.headers['request-duration'],
-                }]);
+                }, ...networkLog]);
 
                 console.log({
                     method: response.config.method,
