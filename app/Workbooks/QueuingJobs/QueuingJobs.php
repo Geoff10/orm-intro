@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Workbooks\QueuingJobs;
 
 use App\Workbooks\QueuingJobs\Chapters\IntroductionChapter;
+use App\Workbooks\QueuingJobs\Chapters\WhyWeQueueChapter;
 use App\Workbooks\Workbook;
 
 class QueuingJobs extends Workbook
@@ -22,7 +23,7 @@ class QueuingJobs extends Workbook
     public function chapters(): array
     {
         return [
-            new IntroductionChapter(),
+            new WhyWeQueueChapter(),
         ];
     }
 }
