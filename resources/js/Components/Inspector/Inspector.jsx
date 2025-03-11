@@ -3,8 +3,9 @@ import DatabaseQueries from "./DatabaseQueries";
 import QueuedJobs from "./Queues/QueuedJobs";
 import withJobFiltering from "./Queues/JobFiltering";
 import Tab from "@/Components/Navigation/Tab";
+import NetworkRequests from "./Queues/NetworkRequests";
 
-export default function Inspector({ queryLog = null, queueLog = null, fullHeight = false }) {
+export default function Inspector({ queryLog = null, queueLog = null, networkLog = null, fullHeight = false }) {
     const [currentTab, setCurrentTab] = useState(queryLog ? 'query' : 'queue');
     const [height, setHeight] = useState(24);
 
@@ -36,6 +37,9 @@ export default function Inspector({ queryLog = null, queueLog = null, fullHeight
                     {queueLog && <Tab title={`Queued Jobs (${queueLog.jobs.length})`}
                         active={currentTab === 'queue'}
                         onClick={() => setTab('queue')} />}
+                    {networkLog && <Tab title={`Network Requests (${networkLog.length})`}
+                        active={currentTab === 'network'}
+                        onClick={() => setTab('network')} />}
                 </nav>
                 {fullHeight || <div>
                     <button onClick={() => decreaseInspectorHeight()}>
@@ -50,6 +54,7 @@ export default function Inspector({ queryLog = null, queueLog = null, fullHeight
             <div className={`flex flex-col ${fullHeight ? 'flex-grow' : ''}`} style={{ height: fullHeight ? '100%' : `${height}rem` }}>
                 {currentTab === 'query' && queryLog && <DatabaseQueries queryLog={queryLog} />}
                 {currentTab === 'queue' && queueLog && <EnhancedQueuedJobs queueLog={queueLog.jobs} />}
+                {currentTab === 'network' && networkLog && <NetworkRequests networkLog={networkLog} />}
             </div>
         </div>
     );

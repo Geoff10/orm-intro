@@ -3,7 +3,7 @@ import ContentRenderer from '@/Components/WorkbookContent/ContentRenderer';
 import WorkbookNavigation from '@/Components/WorkbookContent/WorkbookNavigation';
 import Inspector from '@/Components/Inspector/Inspector';
 import { Head } from '@inertiajs/react';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 
 export default function SelectData({ workbook, chapter, previous_chapter, next_chapter, uniqueSessionId }) {
@@ -44,9 +44,38 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
     }
 
     const [queueLog, setQueueLog] = useReducer(queueLogReducer, { jobs: [] });
+    const [networkLog, setNetworkLog] = useState([]);
 
     const loadPreviewDisplay = (url, title, options) => {
-        axios.get(url, { params: options });
+        // axios.get(url, { params: options });
+        const instance = axios.create();
+
+        instance.interceptors.request.use((config) => {
+            config.headers['request-startTime'] = new Date().getTime();
+            return config;
+        });
+
+        instance.interceptors.response.use((response) => {
+            const currentTime = new Date().getTime();
+            const startTime = response.config.headers['request-startTime'];
+            response.headers['request-duration'] = (currentTime - startTime) / 1000;
+            return response;
+        });
+
+        instance.get(url, { params: options })
+            .then((response) => {
+                setNetworkLog([...networkLog, {
+                    method: response.config.method,
+                    status: response.status,
+                    duration: response.headers['request-duration'],
+                }]);
+
+                console.log({
+                    method: response.config.method,
+                    status: response.status,
+                    duration: response.headers['request-duration'],
+                });
+            });
     }
 
     useEffect(() => {
@@ -70,7 +99,7 @@ export default function SelectData({ workbook, chapter, previous_chapter, next_c
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg grow basis-0 flex flex-col">
-                    <Inspector queueLog={queueLog} fullHeight={true} />
+                    <Inspector queueLog={queueLog} networkLog={networkLog} fullHeight={true} />
                 </div>
             </div>
         </WorkbookLayout>
