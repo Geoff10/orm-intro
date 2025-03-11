@@ -29,6 +29,17 @@ class PlaygroundChapter extends Chapter
         return [
             [
                 'type' => 'triggerButton',
+                'buttonText' => 'Run without queue',
+                "title" => "What if we don't use a queue?",
+                'text' => [],
+                'code' => function (): array {
+                    SlowJobExample::dispatchSync(session()->get('session_identifier'));
+
+                    return [];
+                },
+            ],
+            [
+                'type' => 'triggerButton',
                 'buttonText' => 'Queue slow job',
                 "title" => "Using a queued job",
                 'text' => [],
@@ -73,7 +84,7 @@ class PlaygroundChapter extends Chapter
             ],
             [
                 'type' => 'triggerButton',
-                'buttonText' => 'Queue retry jobs',
+                'buttonText' => 'Queue retry job',
                 "title" => "Create many risky job",
                 'text' => [],
                 'code' => function (): array {
@@ -84,7 +95,7 @@ class PlaygroundChapter extends Chapter
             ],
             [
                 'type' => 'triggerButton',
-                'buttonText' => 'Queue retry jobs',
+                'buttonText' => 'Queue retry job with backoff',
                 "title" => "Create many risky job",
                 'text' => [],
                 'code' => function (): array {
