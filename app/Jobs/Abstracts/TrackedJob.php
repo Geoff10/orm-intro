@@ -29,6 +29,8 @@ abstract class TrackedJob implements ShouldQueue
 
     public function failed(Throwable $e): void
     {
+        Cache::decrement("user-{$this->uniqueSessionId}-usage");
+
         $this->updateStatus('failed', $e->getMessage());
     }
 
