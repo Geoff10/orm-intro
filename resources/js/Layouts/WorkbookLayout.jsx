@@ -12,13 +12,10 @@ export default function Workbook({ title, children }) {
                         <div className="flex">
                             <div className="space-x-8 sm:-my-px sm:ml-10 flex">
                                 <NavLink href={route('workbook', { workbook: 'eloquentSelectData', chapter: 'selectData' })}>
-                                    Selects
+                                    Eloquent
                                 </NavLink>
-                                <NavLink href={route('workbook', { workbook: 'eloquentSelectData', chapter: 'insertingData' })}>
-                                    Inserts
-                                </NavLink>
-                                <NavLink href={route('workbook', { workbook: 'eloquentSelectData', chapter: 'queryingRelatedData' })}>
-                                    Relationships
+                                <NavLink href={route('workbook', { workbook: 'queuingJobs', chapter: 'whyWeQueue' })}>
+                                    Queues
                                 </NavLink>
                             </div>
                         </div>
