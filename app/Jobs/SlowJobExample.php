@@ -8,6 +8,6 @@ class SlowJobExample extends TrackedJob
 {
     protected function run(): void
     {
-        sleep(random_int(1, 5));
+        sleep(random_int(2, 4));
     }
 }
