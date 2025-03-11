@@ -36,7 +36,7 @@ class WhyWeQueueChapter extends Chapter
             ],
             [
                 'type' => 'triggerButton',
-                'buttonText' => 'Run slow task',
+                'buttonText' => 'Run slow job',
                 "title" => "What if we don't use a queue?",
                 'text' => [
                     'Try clicking this button lots of times in quick succession.',
