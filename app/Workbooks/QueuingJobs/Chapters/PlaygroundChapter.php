@@ -29,6 +29,17 @@ class PlaygroundChapter extends Chapter
         return [
             [
                 'type' => 'triggerButton',
+                'buttonText' => 'Run without queue',
+                "title" => "What if we don't use a queue?",
+                'text' => [],
+                'code' => function (): array {
+                    SlowJobExample::dispatchSync(session()->get('session_identifier'));
+
+                    return [];
+                },
+            ],
+            [
+                'type' => 'triggerButton',
                 'buttonText' => 'Queue slow job',
                 "title" => "Using a queued job",
                 'text' => [],
