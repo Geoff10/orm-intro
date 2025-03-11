@@ -11,7 +11,6 @@ use Throwable;
 
 abstract class TrackedJob implements ShouldQueue
 {
-    use Dispatchable;
     use Queueable;
 
     public string $id;
