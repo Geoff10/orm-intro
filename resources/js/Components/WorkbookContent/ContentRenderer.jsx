@@ -14,6 +14,17 @@ export default function ContentRenderer({ content, loadPreviewDisplay }) {
                         return <h3 key={index} className='font-bold text-lg my-2'>{item.content}</h3>
                     case 'p':
                         return <p key={index} className='my-2'>{item.content}</p>
+                    case 'triggerButton':
+                        return <div className='my-3' key={index}>
+                            <p>{item.text}</p>
+                            <div className="flex flex-row-reverse">
+                                <button
+                                    className='bg-green-600 hover:bg-green-700 text-white font-semibold uppercase tracking-widest py-2 px-4 rounded'
+                                    onClick={() => loadPreviewDisplay(item.route, item.title, item.options)}>
+                                    {item.buttonText}
+                                </button>
+                            </div>
+                        </div>
                     case 'runnableCodeBlock':
                         return <RunnableCodeBlock
                             key={index}

@@ -32,7 +32,8 @@ class IntroductionChapter extends Chapter
                 // 'content' => 'Queues are a way to defer the processing of a time-consuming task, such as sending an email, to a later time. This can help to speed up the response time of your application.',
             ],
             [
-                'type' => 'runnableCodeBlock',
+                'type' => 'triggerButton',
+                'buttonText' => 'Run slow task',
                 "title" => "What if we don't use a queue?",
                 'text' => [
                     'Here we are going to simulate a slow task that takes between 1 and 5 seconds to complete. This task is not being queued, so it will run immediately.',
@@ -44,10 +45,11 @@ class IntroductionChapter extends Chapter
                 },
             ],
             [
-                'type' => 'runnableCodeBlock',
+                'type' => 'triggerButton',
+                'buttonText' => 'Queue slow task',
                 "title" => "Add to Queue",
                 'text' => [
-                    'Put a new task in the queue.',
+                    'Now we are going to simulate the same slow task, but this time we are going to queue it. This means that the task will be added to a queue and processed later.',
                 ],
                 'code' => function (): array {
                     SlowJobExample::dispatch(session()->get('session_identifier'));

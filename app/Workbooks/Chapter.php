@@ -41,7 +41,7 @@ abstract class Chapter
         return collect($this->content())
             ->when($this->hideClosures, function (Collection $content) {
                 return $content->map(function (array $content) {
-                    if ($content['type'] === 'runnableCodeBlock') {
+                    if (isset($content['code'])) {
                         $content['code'] = null;
                     }
 
@@ -49,7 +49,10 @@ abstract class Chapter
                 });
             })
             ->map(function (array $content, int $index) {
-                if ($content['type'] === 'runnableCodeBlock' && !isset($content['route'])) {
+                if (
+                    ($content['type'] === 'runnableCodeBlock' || $content['type'] === 'triggerButton') &&
+                    !isset($content['route'])
+                ) {
                     $content['route'] = route('preview', [
                         'workbook' => $this->workbookId(),
                         'chapter' => $this->id(),
