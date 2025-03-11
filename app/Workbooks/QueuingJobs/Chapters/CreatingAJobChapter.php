@@ -45,8 +45,6 @@ class SlowJobExample implements ShouldQueue
     public function handle()
     {
         sleep(rand(2, 4));
-
-        logger("Slow job completed");
     }
 }',
             ],
