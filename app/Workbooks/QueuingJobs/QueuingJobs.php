@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Workbooks\QueuingJobs;
 
 use App\Workbooks\QueuingJobs\Chapters\CreatingAJobChapter;
+use App\Workbooks\QueuingJobs\Chapters\DelayJobsStartChapter;
 use App\Workbooks\QueuingJobs\Chapters\JobFailuresChapter;
 use App\Workbooks\QueuingJobs\Chapters\PriorityJobsChapter;
 use App\Workbooks\QueuingJobs\Chapters\RetryingJobsChapter;
@@ -33,6 +34,7 @@ class QueuingJobs extends Workbook
             new JobFailuresChapter(),
             new RetryingJobsChapter(),
             new RetryingJobsWithDelayChapter(),
+            new DelayJobsStartChapter(),
         ];
     }
 }
