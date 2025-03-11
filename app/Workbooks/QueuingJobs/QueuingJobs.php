@@ -7,6 +7,7 @@ namespace App\Workbooks\QueuingJobs;
 use App\Workbooks\QueuingJobs\Chapters\CreatingAJobChapter;
 use App\Workbooks\QueuingJobs\Chapters\JobFailuresChapter;
 use App\Workbooks\QueuingJobs\Chapters\PriorityJobsChapter;
+use App\Workbooks\QueuingJobs\Chapters\RetryingJobsChapter;
 use App\Workbooks\QueuingJobs\Chapters\WhyWeQueueChapter;
 use App\Workbooks\Workbook;
 
@@ -29,6 +30,7 @@ class QueuingJobs extends Workbook
             new CreatingAJobChapter(),
             new PriorityJobsChapter(),
             new JobFailuresChapter(),
+            new RetryingJobsChapter(),
         ];
     }
 }
