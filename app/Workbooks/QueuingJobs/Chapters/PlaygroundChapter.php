@@ -84,7 +84,7 @@ class PlaygroundChapter extends Chapter
             ],
             [
                 'type' => 'triggerButton',
-                'buttonText' => 'Queue retry jobs',
+                'buttonText' => 'Queue retry job',
                 "title" => "Create many risky job",
                 'text' => [],
                 'code' => function (): array {
@@ -95,7 +95,7 @@ class PlaygroundChapter extends Chapter
             ],
             [
                 'type' => 'triggerButton',
-                'buttonText' => 'Queue retry jobs',
+                'buttonText' => 'Queue retry job with backoff',
                 "title" => "Create many risky job",
                 'text' => [],
                 'code' => function (): array {
